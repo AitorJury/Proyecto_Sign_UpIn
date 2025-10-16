@@ -15,12 +15,8 @@
            </image>
        </ImageView>
 
-       <Label fx:id="lblWelcome" layoutX="277.0" layoutY="359.0" prefHeight="50.0" prefWidth="424.0" style="-fx-text-fill: #333333; -fx-font-size: 28px;" text="¡Has entrado correctamente!" />
+       <Label fx:id="lblWelcome" layoutX="277.0" layoutY="359.0" prefHeight="50.0" prefWidth="469.0" style="-fx-text-fill: #333333; -fx-font-size: 28px;" text="You have successfully logged in!" />
 
-       <Button fx:id="btnLogout" layoutX="379.0" layoutY="615.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="220.0" style="-fx-background-color: #cccccc; -fx-background-radius: 5; -fx-text-fill: #000000;" text="Log Out">
-           <tooltip>
-               <Tooltip text="Pulsa para cerrar sesión" />
-           </tooltip>
-       </Button>
+       <Button fx:id="btnLogout" layoutX="379.0" layoutY="615.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="220.0" style="-fx-background-color: #cccccc; -fx-background-radius: 5; -fx-text-fill: #000000;" text="Log Out" /> 
    </children>
 </Pane>

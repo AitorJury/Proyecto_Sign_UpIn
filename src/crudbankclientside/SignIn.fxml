@@ -24,7 +24,7 @@
        <TextField fx:id="txtEmail" layoutX="346.0" layoutY="240.0" prefHeight="30.0" prefWidth="352.0" promptText="user@example.com" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
        <Label layoutX="710.0" layoutY="244.0" text="❓">
            <tooltip>
-               <Tooltip text="Introduce tu correo electrónico para iniciar sesión" />
+               <Tooltip text="Enter your email address to log in" />
            </tooltip>
        </Label>
 
@@ -32,7 +32,7 @@
        <PasswordField fx:id="txtPassword" layoutX="346.0" layoutY="290.0" prefHeight="30.0" prefWidth="352.0" promptText="Enter your password" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
        <Label layoutX="710.0" layoutY="294.0" text="❓">
            <tooltip>
-               <Tooltip text="Introduce tu contraseña asociada al correo" />
+               <Tooltip text="Enter your password associated with the email" />
            </tooltip>
        </Label>
 
