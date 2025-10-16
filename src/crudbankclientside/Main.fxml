@@ -1,14 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="crudbankclientside.FXMLDocumentController">
-    <children>
-        <Button fx:id="button" layoutX="126" layoutY="90" onAction="#handleButtonAction" text="Click Me!" />
-        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
-    </children>
-</AnchorPane>
+<Pane prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: #FFFFFF;"
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+
+   <children>
+      <!-- Logo -->
+      <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="290.0" layoutY="60.0" preserveRatio="true">
+         <image>
+            <Image url="@../../../../Descargas/Captura%20de%20pantalla%20-2025-10-15%2011-40-42.png" />
+         </image>
+      </ImageView>
+
+      <!-- Título -->
+      <Label layoutX="430.0" layoutY="110.0" text="Sign Up" style="-fx-text-fill: #333333;">
+         <font>
+            <Font size="42.0" />
+         </font>
+      </Label>
+
+      <!-- Campos de texto -->
+      <TextField fx:id="txtFirstName" layoutX="346.0" layoutY="181.0" prefHeight="30.0" prefWidth="352.0"
+                 promptText="First Name" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+      <TextField fx:id="txtLastName" layoutX="346.0" layoutY="225.0" prefHeight="30.0" prefWidth="352.0"
+                 promptText="Last Name" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+      <TextField fx:id="txtMiddleInitial" layoutX="346.0" layoutY="269.0" prefHeight="30.0" prefWidth="352.0"
+                 promptText="Middle Initial" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+      <TextField fx:id="txtEmail" layoutX="346.0" layoutY="313.0" prefHeight="30.0" prefWidth="352.0"
+                 promptText="Email" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+      <PasswordField fx:id="txtPassword" layoutX="346.0" layoutY="355.0" prefHeight="30.0" prefWidth="352.0"
+                     promptText="Password" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+      <PasswordField fx:id="txtRepeatPassword" layoutX="346.0" layoutY="399.0" prefHeight="30.0" prefWidth="352.0"
+                     promptText="Repeat Password" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+
+      <TextField fx:id="txtPhone" layoutX="346.0" layoutY="442.0" prefHeight="30.0" prefWidth="225.0"
+                 promptText="Phone Number" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+      <TextField fx:id="txtZip" layoutX="584.0" layoutY="442.0" prefHeight="30.0" prefWidth="114.0"
+                 promptText="ZIP" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+      <TextField fx:id="txtCity" layoutX="346.0" layoutY="484.0" prefHeight="30.0" prefWidth="170.0"
+                 promptText="City" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+      <TextField fx:id="txtState" layoutX="530.0" layoutY="484.0" prefHeight="30.0" prefWidth="168.0"
+                 promptText="State" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+      <TextField fx:id="txtStreet" layoutX="346.0" layoutY="524.0" prefHeight="30.0" prefWidth="352.0"
+                 promptText="Street" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+
+      <!-- Botones -->
+      <Button fx:id="btnBack" layoutX="362.0" layoutY="565.0" prefHeight="35.0" prefWidth="84.0"
+              text="Back" style="-fx-background-color: #cccccc; -fx-background-radius: 5; -fx-text-fill: #000000;"
+              mnemonicParsing="false" />
+      <Button fx:id="btnCreateAccount" layoutX="460.0" layoutY="565.0" prefHeight="35.0" prefWidth="220.0"
+              text="Create Account" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5;"
+              mnemonicParsing="false" />
+
+      <!-- Mensaje de error / confirmación -->
+      <Label fx:id="lblMessage" layoutX="400.0" layoutY="610.0" textFill="red"
+             style="-fx-font-size: 14px;" text="" visible="false"/>
+
+      <!-- Enlace a login -->
+      <Label layoutX="420.0" layoutY="640.0" text="Already have an account?" />
+      <Hyperlink fx:id="linkSignIn" layoutX="620.0" layoutY="640.0" text="Sign In" style="-fx-font-size: 13px;" />
+   </children>
+</Pane>
