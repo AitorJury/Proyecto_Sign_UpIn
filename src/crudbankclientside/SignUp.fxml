@@ -9,21 +9,20 @@
       xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 
    <children>
-      <!-- Logo -->
       <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="290.0" layoutY="60.0" preserveRatio="true">
          <image>
             <Image url="@../../../../Descargas/Captura%20de%20pantalla%20-2025-10-15%2011-40-42.png" />
          </image>
       </ImageView>
 
-      <!-- Título -->
+
       <Label layoutX="430.0" layoutY="110.0" text="Sign Up" style="-fx-text-fill: #333333;">
          <font>
             <Font size="42.0" />
          </font>
       </Label>
 
-      <!-- Nombres -->
+
       <Label layoutX="240.0" layoutY="185.0" text="First Name:" />
       <TextField fx:id="txtFirstName" layoutX="346.0" layoutY="181.0" prefHeight="30.0" prefWidth="352.0"
                  promptText="Ej: Juan" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
@@ -109,7 +108,7 @@
          </tooltip>
       </Label>
 
-      <!-- Botones -->
+
       <Button fx:id="btnBack" layoutX="362.0" layoutY="565.0" prefHeight="35.0" prefWidth="84.0"
               text="Atrás" style="-fx-background-color: #cccccc; -fx-background-radius: 5; -fx-text-fill: #000000;"
               mnemonicParsing="false" />
@@ -117,11 +116,11 @@
               text="Crear Cuenta" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5;"
               mnemonicParsing="false" />
 
-      <!-- Mensaje de error / confirmación -->
+
       <Label fx:id="lblMessage" layoutX="400.0" layoutY="610.0" textFill="red"
              style="-fx-font-size: 14px;" text="" visible="false"/>
 
-      <!-- Enlace a login -->
+
       <Label layoutX="420.0" layoutY="640.0" text="¿Ya tienes una cuenta?" />
       <Hyperlink fx:id="linkSignIn" layoutX="620.0" layoutY="640.0" text="Iniciar sesión" style="-fx-font-size: 13px;" />
    </children>
