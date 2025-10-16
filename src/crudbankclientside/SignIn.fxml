@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="469.0" layoutY="168.0" prefHeight="34.0" prefWidth="170.0" text="Sign In">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Label>
+      <TextField layoutX="341.0" layoutY="243.0" prefHeight="25.0" prefWidth="356.0" promptText="user@example.com" />
+      <TextField layoutX="341.0" layoutY="293.0" prefHeight="25.0" prefWidth="356.0" promptText="Password" />
+      <Hyperlink layoutX="569.0" layoutY="406.0" text="Registrer">
+         <tooltip>
+            <Tooltip text="Enter to create an account" />
+         </tooltip></Hyperlink>
+      <Label layoutX="367.0" layoutY="410.0" prefHeight="15.0" prefWidth="212.0" text="Don't you have account?" />
+      <Button layoutX="338.0" layoutY="335.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="69.0" style="-fx-background-color: #cccccc; -fx-border-radius: 5; -fx-text-fill: #000000;" text="Exit">
+         <tooltip>
+            <Tooltip text="Touch the button to exit the page" />
+         </tooltip></Button>
+      <Button layoutX="415.0" layoutY="335.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="277.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5;" text="Enter">
+         <tooltip>
+            <Tooltip text="Touch the button to sign in" />
+         </tooltip></Button>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="323.0" layoutY="115.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../Descargas/fotosintextonifodno.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="278.0" layoutY="244.0" prefHeight="23.0" prefWidth="45.0" text="Email" />
+      <Label layoutX="270.0" layoutY="293.0" prefHeight="25.0" prefWidth="97.0" text="Password" />
+   </children>
+</Pane>
