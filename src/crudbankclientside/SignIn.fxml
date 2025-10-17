@@ -31,7 +31,6 @@
 
         <Label layoutX="255.0" layoutY="294.0" text="Password:" />
         <PasswordField fx:id="txtPassword" layoutX="346.0" layoutY="290.0" prefHeight="30.0" prefWidth="352.0" promptText="Enter your password" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
-        <Button fx:id="btnShowPassword" layoutX="664.0" layoutY="290.0" prefHeight="30.0" prefWidth="34.0" style="-fx-background-color: transparent;" text="👁️" />
         <Label layoutX="710.0" layoutY="298.0" text="❓">
             <tooltip>
                 <Tooltip text="Enter your email password to log in" />
