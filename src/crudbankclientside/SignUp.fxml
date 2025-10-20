@@ -104,7 +104,7 @@
          </Label>
          <Label fx:id="errStreetZip" layoutX="740.0" layoutY="539.0" textFill="red" />
    
-         <Button fx:id="btnBack" layoutX="363.0" layoutY="590.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="84.0" style="-fx-background-color: #cccccc; -fx-background-radius: 5; -fx-text-fill: #000000;" text="Back" />
+         <Button fx:id="btnExit" layoutX="363.0" layoutY="590.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="84.0" style="-fx-background-color: #cccccc; -fx-background-radius: 5; -fx-text-fill: #000000;" text="Exit" />
          <Button fx:id="btnCreateAccount" layoutX="461.0" layoutY="590.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="220.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5;" text="Create Account" />
    
          <Label layoutX="402.0" layoutY="636.0" text="Already have an account?" />
