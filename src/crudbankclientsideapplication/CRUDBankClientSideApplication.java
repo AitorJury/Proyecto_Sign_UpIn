@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package crudbankclientside;
+package crudbankclientsideapplication;
 
+import crudbankclientsideapplication.ui.SignUpController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,11 +16,16 @@ import javafx.stage.Stage;
  *
  * @author aitor
  */
-public class CRUDBankClientSide extends Application {
+public class CRUDBankClientSideApplication extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/SignUp.fxml"));
+        Parent root = loader.load();
+        
+        SignUpController controller = loader.getController();
+        
+        controller.init(stage);
         
         Scene scene = new Scene(root);
         
