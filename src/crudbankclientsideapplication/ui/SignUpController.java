@@ -6,7 +6,12 @@
 package crudbankclientsideapplication.ui;
 
 import java.util.logging.Logger;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -68,8 +73,10 @@ public class SignUpController {
     private static final Logger LOGGER = 
             Logger.getLogger("crudbankclientsideapplication.ui");
 
-    public void init(Stage stage) {
+    public void init(Stage stage, Parent root) {
         LOGGER.info("Initializing window.");
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
         // Establecer el título de la ventana
         stage.setTitle("Sign Up");
         // la ventana no debe ser redimensionable
@@ -95,6 +102,51 @@ public class SignUpController {
         Los campos de texto y password están habilitados para la entrada de 
         datos.
         */
+        // Asociar eventos a manejadores
+        btnExit.setOnAction(this::handleBtnExitOnAction);
+        btnCreateAccount.setOnAction(this::handleBtnCreateAccountOnAction);
         
+        txtFirstName.textProperty().addListener(this::handleTxtFirstNameTextChange);
+        txtFirstName.focusedProperty().addListener(this::handleTxtFirstNameFocusChange);
+        
+        
+        // Mostrar la ventana
+        stage.show();
+    }
+    /**
+     * 
+     * @param event 
+     */
+    private void handleBtnExitOnAction(ActionEvent event) {
+        
+    }
+    /**
+     * 
+     * @param event 
+     */
+    private void handleBtnCreateAccountOnAction(ActionEvent event) {
+        
+    }
+    /**
+     * 
+     * @param observable
+     * @param oldValue
+     * @param newValue 
+     */
+    private void handleTxtFirstNameTextChange(ObservableValue observable, String oldValue, String newValue) {
+        
+    }
+    /**
+     * 
+     * @param observable
+     * @param oldValue
+     * @param newValue 
+     */
+    private void handleTxtFirstNameFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
+        if(!newValue) {
+            
+        } else {
+            
+        }
     }
 }
