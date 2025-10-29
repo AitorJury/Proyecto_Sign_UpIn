@@ -5,6 +5,8 @@
  */
 package crudbankclientsideapplication.ui;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
@@ -61,13 +63,23 @@ public class SignInController {
         //Si ocurre un error al cerrar la página se lanzará una excepción y se mostrará que no se puede cerrar la aplicación.
         //Mostrar la ventana
         stage.show();
-        initialiceButtonSignIn();
+        
+        List<TextField> fields = new ArrayList<>();
+        fields.add(txtEmail);
+        fields.add(txtPassword);
+        
+        
+        
+        
         // Establecer el título de la ventana a “Sign In”.
         //La ventana no debe ser redimensionable.
         //Preparar el formulario de entrada con los campos de correo y contraseña vacíos.
         //La ventana es no modal.
         //Enfocar automáticamente el campo de correo al abrir la ventana.
 
+    }
+    private void createArray(){
+        
     }
 
     private void handleBtnExitOnAction(ActionEvent event) {
@@ -90,32 +102,16 @@ public class SignInController {
     
     //Este es el método que establece que al iniciar la aplicación el botón
     //aparezca deshabilitado
-    private void initialiceButtonSignIn(){
-          btnSignIn.setDisable(true);
-          txtEmail.textProperty().addListener(this::textChange);
-          txtPassword.textProperty().addListener(this::textChange);
-          txtPassword.textProperty().addListener(this::textChange);
-          
-    }
-    
     //Este botón hace que automáticamente cuando en el texto se escriba algo
     //le envie a la funcion initialButtonSignIn() el cambio que ha habido.
-     private void textChange(ObservableValue observable, String oldValue, String newValue) {
-        boolean enable = txtPassword.getText().trim().isEmpty() || !txtEmail.getText().trim().isEmpty();
-        btnSignIn.setDisable(enable);
-        
-        
-    }
+    
      
       
     
     private void handeltxtEmailTextChange(ObservableValue observable, String oldValue, String newValue) {
         if (this.txtEmail.getText().isEmpty()) {
             txtEmail.setStyle(" -fx-border-color: red");
-
-        } else {
-
-        }
+        } 
 
     }
 
