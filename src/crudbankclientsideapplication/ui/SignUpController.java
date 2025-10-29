@@ -1,6 +1,8 @@
 package crudbankclientsideapplication.ui;
 
 // Imports.
+import crudbankclientsideapplication.model.Customer;
+import crudbankclientsideapplication.logic.CustomerRESTClient;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -86,8 +88,8 @@ public class SignUpController {
     private static final Logger LOGGER = 
             Logger.getLogger("crudbankclientsideapplication.ui");
     
-    // Lista de todos los TextFields.
-    private List<TextField> txtFields;
+    // Lista de todos los TextFields y PasswordFields.
+    private List<javafx.scene.control.TextInputControl> txtFields;
     // Lista de todos los Labels.
     private List<Label> errLabels;
 
@@ -116,7 +118,9 @@ public class SignUpController {
         LOGGER.info("Initializing window.");
         stage.setTitle("Sign Up");
         stage.setResizable(false);
-        handleErrLabelChange(null, null);
+        for (Label err : errLabels) {
+            err.setText("");
+        }
         btnExit.setDisable(false);
         btnCreateAccount.setDisable(true);
         txtFirstName.requestFocus();
@@ -211,11 +215,20 @@ public class SignUpController {
     * @param event El evento de acción generado por el botón.
     */
     private void handleBtnCreateAccountOnAction(ActionEvent event) {
-        // Aquí se implementará la creación de usuario en la base de datos,
-        // pero por ahora solo validamos que todos los campos sean correctos.
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, 
-                "All fields valid! Ready to create account.");
-        alert.showAndWait();
+        try {
+            // Crear un objeto Customer
+            Customer customer = new Customer();
+            // Establecer propiedades del objeto a partir de los valores de los campos
+            // customer.setFirstName();
+            CustomerRESTClient client = new CustomerRESTClient();
+            client.create_XML(customer);
+            client.close();
+            new Alert(Alert.AlertType.INFORMATION, "All fields valid! Ready to "
+                    + "create account.").showAndWait();
+            // Abrir Main
+        } catch (Exception e) {
+            
+        }
     }
     
     /**
@@ -914,28 +927,20 @@ public class SignUpController {
     * Gestiona los labels de error de la ventana Sign Up.
     * Si el parámetro errText es null, se limpian todos los labels de error.  
     * Si errText contiene texto, se usará para mostrar un mensaje de error.
-    *
-    * @param errText El texto de error a mostrar.
+    * 
+    * @param message Mensaje de error a mostrar (null para limpiar)
+     * @param textField Campo de texto asociado
     */
-    private void handleErrLabelChange(String errText, TextField changedField) {
-        if(errText == null) {
-            if (changedField != null) {
-                int i = txtFields.indexOf(changedField);
-                if (i >= 0 && i < errLabels.size()) {
-                    errLabels.get(i).setText("");
-                } else {
-                    for (int idx = 0; idx < Math.min(txtFields.size(), errLabels.size()); idx++) {
-                        errLabels.get(idx).setText("");
-                    }
-                }
+    private void handleErrLabelChange(String message, TextField textField) {
+        if (errLabels == null || txtFields == null) return;
+
+        int index = txtFields.indexOf(textField);
+        if (index != -1 && index < errLabels.size()) {
+            Label errLabel = errLabels.get(index);
+            if (message == null || message.isEmpty()) {
+                errLabel.setText("");
             } else {
-                for (int i = 0; i < txtFields.size(); i++) {
-                    TextField txtField = txtFields.get(i);
-                    Label errLabel = errLabels.get(i);
-                    if (changedField == txtField) {
-                        errLabel.setText(errText);
-                    }
-                }
+                errLabel.setText(message);
             }
         }
     }
@@ -1002,13 +1007,12 @@ public class SignUpController {
             if (zip == null || !zip.matches("\\d{5}")) {
                 allValid = false;
             }
-
+            
+            // Activar o desactivar el botón según la validez de todos los campos
+            btnCreateAccount.setDisable(!allValid);
         } catch (Exception e) {
             LOGGER.info("Error during form validation: ");
             allValid = false;
         }
-
-        // Activar o desactivar el botón según la validez de todos los campos
-        btnCreateAccount.setDisable(!allValid);
     }
 }
