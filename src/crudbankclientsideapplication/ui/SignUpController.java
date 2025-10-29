@@ -21,6 +21,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.ws.rs.ForbiddenException;
+import javax.ws.rs.InternalServerErrorException;
 
 /**
  * Controlador de la ventana Sign Up.
@@ -129,58 +131,26 @@ public class SignUpController {
         btnExit.setOnAction(this::handleBtnExitOnAction);
         btnCreateAccount.setOnAction(this::handleBtnCreateAccountOnAction);
         // Asociar eventos de campos de texto a manejadores.
-        txtFirstName.textProperty().addListener(this::
-                handleTxtFirstNameTextChange);
         txtFirstName.focusedProperty().addListener(this::
                 handleTxtFirstNameFocusChange);
-        
-        txtLastName.textProperty().addListener(this::
-                handleTxtLastNameTextChange);
         txtLastName.focusedProperty().addListener(this::
                 handleTxtLastNameFocusChange);
-        
-        txtMiddleInitial.textProperty().addListener(this::
-                handleTxtMiddleInitialTextChange);
         txtMiddleInitial.focusedProperty().addListener(this::
                 handleTxtMiddleInitialFocusChange);
-        
-        txtEmail.textProperty().addListener(this::
-                handleTxtEmailTextChange);
         txtEmail.focusedProperty().addListener(this::
                 handleTxtEmailFocusChange);
-        
         txtPassword.textProperty().addListener(this::
                 handleTxtPasswordTextChange);
-        txtPassword.focusedProperty().addListener(this::
-                handleTxtPasswordFocusChange);
-        
-        txtRepeatPassword.textProperty().addListener(this::
-                handleTxtRepeatPasswordTextChange);
         txtRepeatPassword.focusedProperty().addListener(this::
                 handleTxtRepeatPasswordFocusChange);
-        
-        txtPhone.textProperty().addListener(this::
-                handleTxtPhoneTextChange);
         txtPhone.focusedProperty().addListener(this::
                 handleTxtPhoneFocusChange);
-        
-        txtCity.textProperty().addListener(this::
-                handleTxtCityTextChange);
         txtCity.focusedProperty().addListener(this::
                 handleTxtCityFocusChange);
-        
-        txtState.textProperty().addListener(this::
-                handleTxtStateTextChange);
         txtState.focusedProperty().addListener(this::
                 handleTxtStateFocusChange);
-        
-        txtStreet.textProperty().addListener(this::
-                handleTxtStreetTextChange);
         txtStreet.focusedProperty().addListener(this::
                 handleTxtStreetFocusChange);
-        
-        txtZip.textProperty().addListener(this::
-                handleTxtZipTextChange);
         txtZip.focusedProperty().addListener(this::
                 handleTxtZipFocusChange);
         } catch (Exception e) {
@@ -219,42 +189,38 @@ public class SignUpController {
             // Crear un objeto Customer
             Customer customer = new Customer();
             // Establecer propiedades del objeto a partir de los valores de los campos
-            // customer.setFirstName();
+            customer.setFirstName(txtFirstName.getText());
+            customer.setLastName(txtLastName.getText());
+            customer.setMiddleInitial(txtMiddleInitial.getText());
+            customer.setEmail(txtEmail.getText());
+            customer.setPassword(txtPassword.getText());
+            customer.setPhone(Long.parseLong(txtPhone.getText()));
+            customer.setCity(txtCity.getText());
+            customer.setState(txtState.getText());
+            customer.setStreet(txtStreet.getText());
+            customer.setZip(Integer.parseInt(txtZip.getText()));
+            
             CustomerRESTClient client = new CustomerRESTClient();
             client.create_XML(customer);
             client.close();
-            new Alert(Alert.AlertType.INFORMATION, "All fields valid! Ready to "
-                    + "create account.").showAndWait();
+            new Alert(Alert.AlertType.INFORMATION, "Customer created successfully!")
+                    .showAndWait();
             // Abrir Main
+        } catch (ForbiddenException e) {
+            // Usuario no autorizado
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR,
+                    "You are not allowed to create a customer.").showAndWait();
+        } catch (InternalServerErrorException e) {
+            // Error del servidor
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR,
+                    "Server error. Please try again later.").showAndWait();
         } catch (Exception e) {
-            
-        }
-    }
-    
-    /**
-    * Manejador del evento de cambio de texto en el campo FirstName.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del texto.
-    * @param newValue El nuevo valor del texto.
-    */
-    private void handleTxtFirstNameTextChange(ObservableValue observable, 
-            String oldValue, String newValue) {
-        try {
-            if (!newValue.matches("[a-zA-Z]+")) {
-                throw new Exception("FirstName must contain only letters");
-            } else if (newValue.length() > 20) {
-                txtFirstName.setText(newValue.substring(0, 20));
-                throw new Exception("FirstName cannot exceeded length of 20");
-            } else {
-                txtFirstName.setStyle("-fx-border-color: green; "
-                        + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                handleErrLabelChange(null, txtFirstName);
-            }
-        } catch (Exception e) {
-            txtFirstName.setStyle("-fx-border-color: red; "
-                    + "-fx-background-radius: 5; -fx-border-radius: 5;");
-            handleErrLabelChange(e.getMessage(), txtFirstName);
+            // Cualquier otro error inesperado
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR,
+                    "Unexpected error: " + e.getMessage()).showAndWait();
         }
     }
     
@@ -265,28 +231,25 @@ public class SignUpController {
     * @param oldValue El valor anterior del foco.
     * @param newValue El nuevo valor del foco.
     */
-    private void handleTxtFirstNameFocusChange(ObservableValue observable, 
-            Boolean oldValue, Boolean newValue) {
+    private void handleTxtFirstNameFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (!newValue) {
-            String text = txtFirstName.getText();
             try {
-                if (text == null || text.trim().isEmpty()) {
-                    txtFirstName.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
+                String text = txtFirstName.getText().trim();
+                if (text.isEmpty()) {
                     throw new Exception("FirstName must not be empty");
-                } else if (!text.matches("[a-zA-Z]+")) {
-                    txtFirstName.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    throw new Exception("FirstName must contain only letters");
-                } else if (text.length() > 20) {
-                    txtFirstName.setText(text.substring(0, 20));
-                    throw new Exception("FirstName cannot exceeded length of 20");
-                } else {
-                    txtFirstName.setStyle("-fx-border-color: green; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    handleErrLabelChange(null, txtFirstName);
                 }
+                if (!text.matches("[a-zA-Z]+")) {
+                    throw new Exception("FirstName must contain only letters");
+                }
+                if (text.length() > 20) {
+                    txtFirstName.setText(text.substring(0, 20));
+                    throw new Exception("FirstName cannot exceed length of 20");
+                }
+
+                txtFirstName.setStyle("-fx-border-color: green;");
+                handleErrLabelChange(null, txtFirstName);
             } catch (Exception e) {
+                txtFirstName.setStyle("-fx-border-color: red;");
                 handleErrLabelChange(e.getMessage(), txtFirstName);
             } finally {
                 checkBtnCreateAccount();
@@ -295,61 +258,32 @@ public class SignUpController {
     }
 
     /**
-    * Manejador del evento de cambio de texto en el campo LastName.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del texto.
-    * @param newValue El nuevo valor del texto.
-    */
-    private void handleTxtLastNameTextChange(ObservableValue observable, 
-            String oldValue, String newValue) {
-        try {
-            if (!newValue.matches("[a-zA-Z]+")) {
-                throw new Exception("LastName must contain only letters");
-            } else if (newValue.length() > 20) {
-                txtLastName.setText(newValue.substring(0, 20));
-                throw new Exception("LastName cannot exceeded length of 20");
-            } else {
-                txtLastName.setStyle("-fx-border-color: green; "
-                        + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                handleErrLabelChange(null, txtLastName);
-            }
-        } catch (Exception e) {
-            txtLastName.setStyle("-fx-border-color: red; "
-                    + "-fx-background-radius: 5; -fx-border-radius: 5;");
-            handleErrLabelChange(e.getMessage(), txtLastName);
-        }
-    }
-    
-    /**
-    * Manejador del evento de cambio de foco en el campo LastName.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del foco.
-    * @param newValue El nuevo valor del foco.
-    */
-    private void handleTxtLastNameFocusChange(ObservableValue observable, 
-            Boolean oldValue, Boolean newValue) {
+     * Manejador del evento de cambio de foco en el campo LastName. Valida el
+     * campo al perder el foco.
+     *
+     * @param observable El valor observable que cambia.
+     * @param oldValue El valor anterior del foco.
+     * @param newValue El nuevo valor del foco.
+     */
+    private void handleTxtLastNameFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (!newValue) {
-            String text = txtLastName.getText();
             try {
-                if (text == null || text.trim().isEmpty()) {
-                    txtLastName.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
+                String text = txtLastName.getText().trim();
+                if (text.isEmpty()) {
                     throw new Exception("LastName must not be empty");
-                } else if (!text.matches("[a-zA-Z]+")) {
-                    txtLastName.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    throw new Exception("LastName must contain only letters");
-                } else if (text.length() > 20) {
-                    txtLastName.setText(text.substring(0, 20));
-                    throw new Exception("LastName cannot exceeded length of 20");
-                } else {
-                    txtLastName.setStyle("-fx-border-color: green; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    handleErrLabelChange(null, txtLastName);
                 }
+                if (!text.matches("[a-zA-Z]+")) {
+                    throw new Exception("LastName must contain only letters");
+                }
+                if (text.length() > 20) {
+                    txtLastName.setText(text.substring(0, 20));
+                    throw new Exception("LastName cannot exceed length of 20");
+                }
+
+                txtLastName.setStyle("-fx-border-color: green;");
+                handleErrLabelChange(null, txtLastName);
             } catch (Exception e) {
+                txtLastName.setStyle("-fx-border-color: red;");
                 handleErrLabelChange(e.getMessage(), txtLastName);
             } finally {
                 checkBtnCreateAccount();
@@ -358,124 +292,63 @@ public class SignUpController {
     }
     
     /**
-    * Manejador del evento de cambio de texto en el campo MiddleInitial.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del texto.
-    * @param newValue El nuevo valor del texto.
-    */
-    private void handleTxtMiddleInitialTextChange(ObservableValue observable, 
-            String oldValue, String newValue) {
-        try {
-            if (!newValue.matches("[a-zA-Z]")) {
-                throw new Exception("MiddleInitial must be a single letter");
-            } else if (newValue.length() > 1) {
-                txtMiddleInitial.setText(newValue.substring(0, 1));
-                throw new Exception("MiddleInitial cannot exceeded length of 1");
-            } else {
-                txtMiddleInitial.setStyle("-fx-border-color: green; "
-                        + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                handleErrLabelChange(null, txtMiddleInitial);
-            }
-        } catch (Exception e) {
-            txtMiddleInitial.setStyle("-fx-border-color: red; "
-                    + "-fx-background-radius: 5; -fx-border-radius: 5;");
-            handleErrLabelChange(e.getMessage(), txtMiddleInitial);
-        }
-    }
-    
-    /**
-    * Manejador del evento de cambio de foco en el campo MiddleInitial.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del foco.
-    * @param newValue El nuevo valor del foco.
-    */
-    private void handleTxtMiddleInitialFocusChange(ObservableValue observable, 
-            Boolean oldValue, Boolean newValue) {
+     * Manejador del evento de cambio de foco en el campo MiddleInitial. Valida
+     * que sea una sola letra al perder el foco y recorta si es necesario.
+     */
+    private void handleTxtMiddleInitialFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (!newValue) {
-            String text = txtMiddleInitial.getText();
             try {
-                if (text == null || text.trim().isEmpty()) {
-                    txtMiddleInitial.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
+                String text = txtMiddleInitial.getText().trim();
+                if (text.isEmpty()) {
                     throw new Exception("MiddleInitial must not be empty");
-                } else if (!text.matches("[a-zA-Z]")) {
-                    txtMiddleInitial.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    throw new Exception("MiddleInitial must be a single letter");
-                } else if (text.length() > 1) {
-                    txtMiddleInitial.setText(text.substring(0, 1));
-                    throw new Exception("MiddleInitial cannot exceeded length of 1");
-                } else {
-                    txtMiddleInitial.setStyle("-fx-border-color: green; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    handleErrLabelChange(null, txtMiddleInitial);
                 }
+                if (!text.matches("[a-zA-Z]+")) {
+                    throw new Exception("MiddleInitial must contain only letters");
+                }
+                if (text.length() > 1) {
+                    text = text.substring(0, 1);
+                    txtMiddleInitial.setText(text);
+                }
+
+                txtMiddleInitial.setStyle("-fx-border-color: green;");
+                handleErrLabelChange(null, txtMiddleInitial);
             } catch (Exception e) {
+                txtMiddleInitial.setStyle("-fx-border-color: red;");
                 handleErrLabelChange(e.getMessage(), txtMiddleInitial);
             } finally {
                 checkBtnCreateAccount();
             }
         }
     }
+
     
     /**
-    * Manejador del evento de cambio de texto en el campo Email.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del texto.
-    * @param newValue El nuevo valor del texto.
-    */
-    private void handleTxtEmailTextChange(ObservableValue observable, 
-            String oldValue, String newValue) {
-        try {
-            if (!newValue.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
-                throw new Exception("Email format invalid");
-            } else if (newValue.length() > 50) {
-                txtEmail.setText(newValue.substring(0, 50));
-                throw new Exception("Email cannot exceeded length of 50");
-            } else {
-                txtEmail.setStyle("-fx-border-color: green; "
-                        + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                handleErrLabelChange(null, txtEmail);
-            }
-        } catch (Exception e) {
-            txtEmail.setStyle("-fx-border-color: red; -fx-background-radius: 5;"
-                    + "-fx-border-radius: 5;");
-            handleErrLabelChange(e.getMessage(), txtEmail);
-        }
-    }
-    
-    /**
-    * Manejador del evento de cambio de foco en el campo Email.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del foco.
-    * @param newValue El nuevo valor del foco.
-    */
-    private void handleTxtEmailFocusChange(ObservableValue observable, 
-            Boolean oldValue, Boolean newValue) {
+     * Manejador del evento de cambio de foco en el campo Email. Valida formato
+     * y longitud al perder el foco.
+     *
+     * @param observable El valor observable que cambia.
+     * @param oldValue El valor anterior del foco.
+     * @param newValue El nuevo valor del foco.
+     */
+    private void handleTxtEmailFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (!newValue) {
-            String text = txtEmail.getText();
             try {
-                if (text == null || text.trim().isEmpty()) {
-                    txtEmail.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
+                String text = txtEmail.getText().trim();
+                if (text.isEmpty()) {
                     throw new Exception("Email must not be empty");
-                } else if (!text.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
-                    txtEmail.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    throw new Exception("Email format invalid");
-                } else if (text.length() > 50) {
-                    txtEmail.setText(text.substring(0, 50));
-                    throw new Exception("Email cannot exceeded length of 50");
-                } else {
-                    txtEmail.setStyle("-fx-border-color: green; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    handleErrLabelChange(null, txtEmail);
                 }
+                if (!text.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+                    throw new Exception("Email format invalid");
+                }
+                if (text.length() > 50) {
+                    txtEmail.setText(text.substring(0, 50));
+                    throw new Exception("Email cannot exceed length of 50");
+                }
+
+                txtEmail.setStyle("-fx-border-color: green;");
+                handleErrLabelChange(null, txtEmail);
             } catch (Exception e) {
+                txtEmail.setStyle("-fx-border-color: red;");
                 handleErrLabelChange(e.getMessage(), txtEmail);
             } finally {
                 checkBtnCreateAccount();
@@ -484,123 +357,60 @@ public class SignUpController {
     }
     
     /**
-    * Manejador del evento de cambio de texto en el campo Password.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del texto.
-    * @param newValue El nuevo valor del texto.
-    */
-    private void handleTxtPasswordTextChange(ObservableValue observable, 
-            String oldValue, String newValue) {
-        try {
-            if (newValue == null || newValue.trim().isEmpty()) {
-                throw new Exception("Password must not be empty");
-            } else if (!newValue.matches("[a-zA-Z0-9]+")) {
-                throw new Exception("Password must contain no special "
-                        + "characters");
-            } else if (newValue.length() < 8) {
-                throw new Exception("Password must be at least 8 characters");
-            } else {
-                txtPassword.setStyle("-fx-border-color: green; "
-                        + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                handleErrLabelChange(null, txtPassword);
-            }
-        } catch (Exception e) {
-            txtPassword.setStyle("-fx-border-color: red; "
-                    + "-fx-background-radius: 5; -fx-border-radius: 5;");
-            handleErrLabelChange(e.getMessage(), txtPassword);
-        }
-    }
-    
-    /**
-    * Manejador del evento de cambio de foco en el campo Password.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del foco.
-    * @param newValue El nuevo valor del foco.
-    */
-    private void handleTxtPasswordFocusChange(ObservableValue observable, 
-            Boolean oldValue, Boolean newValue) {
-        if (!newValue) {
-            String text = txtPassword.getText();
+     * Manejador del evento de cambio de foco en el campo Password. Valida que
+     * no esté vacío, que solo contenga letras y números, y que tenga al menos 8
+     * caracteres.
+     *
+     * @param observable El valor observable que cambia.
+     * @param oldValue El valor anterior del foco.
+     * @param newValue El nuevo valor del foco.
+     */
+    private void handleTxtPasswordTextChange(ObservableValue observable, String oldValue, String newValue) {
             try {
-                if (text == null || text.trim().isEmpty()) {
-                    txtPassword.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
+                if (newValue.isEmpty()) {
                     throw new Exception("Password must not be empty");
-                } else if (!text.matches("[a-zA-Z0-9]+")) {
-                    txtPassword.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    throw new Exception("Password must contain no special "
-                            + "characters");
-                } else if (text.length() < 8) {
-                    throw new Exception("Password must be at least 8 characters");
-                } else {
-                    txtPassword.setStyle("-fx-border-color: green; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    handleErrLabelChange(null, txtPassword);
                 }
+                if (!newValue.matches("[a-zA-Z0-9.*!@#$%&\\-_]{8,}")) {
+                    throw new Exception("Password contains invalid characters");
+                }
+                if (newValue.length() < 8) {
+                    throw new Exception("Password must be at least 8 characters");
+                }
+
+                txtPassword.setStyle("-fx-border-color: green;");
+                handleErrLabelChange(null, txtPassword);
             } catch (Exception e) {
+                txtPassword.setStyle("-fx-border-color: red;");
                 handleErrLabelChange(e.getMessage(), txtPassword);
             } finally {
                 checkBtnCreateAccount();
             }
         }
-    }
+    
     
     /**
-    * Manejador del evento de cambio de texto en el campo RepeatPassword.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del texto.
-    * @param newValue El nuevo valor del texto.
-    */
-    private void handleTxtRepeatPasswordTextChange(ObservableValue observable, 
-            String oldValue, String newValue) {
-        try {
-            String psw = txtPassword.getText();
-            if (newValue == null || newValue.trim().isEmpty() || 
-                    !newValue.equals(psw)) {
-                throw new Exception("RepeatPassword must be like Password");
-            } else {
-                txtRepeatPassword.setStyle("-fx-border-color: green; "
-                        + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                handleErrLabelChange(null, txtRepeatPassword);
-            }
-        } catch (Exception e) {
-            txtRepeatPassword.setStyle("-fx-border-color: red; "
-                    + "-fx-background-radius: 5; -fx-border-radius: 5;");
-            handleErrLabelChange(e.getMessage(), txtRepeatPassword);
-        }
-    }
-    
-    /**
-    * Manejador del evento de cambio de foco en el campo RepeatPassword.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del foco.
-    * @param newValue El nuevo valor del foco.
-    */
-    private void handleTxtRepeatPasswordFocusChange(ObservableValue observable, 
-            Boolean oldValue, Boolean newValue) {
+     * Manejador del evento de cambio de foco en el campo RepeatPassword. Valida
+     * que no esté vacío y que coincida con el Password.
+     *
+     * @param observable El valor observable que cambia.
+     * @param oldValue El valor anterior del foco.
+     * @param newValue El nuevo valor del foco.
+     */
+    private void handleTxtRepeatPasswordFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (!newValue) {
-            String text = txtRepeatPassword.getText();
-            String psw = txtPassword.getText();
             try {
-                if (text == null || text.trim().isEmpty()) {
-                    txtRepeatPassword.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
+                String text = txtRepeatPassword.getText().trim();
+                if (text.isEmpty()) {
                     throw new Exception("RepeatPassword must not be empty");
-                } else if (!text.equals(psw)) {
-                    txtRepeatPassword.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    throw new Exception("RepeatPassword must be like Password");
-                } else {
-                    txtRepeatPassword.setStyle("-fx-border-color: green; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    handleErrLabelChange(null, txtRepeatPassword);
                 }
+                if (!text.equals(txtPassword.getText())) {
+                    throw new Exception("RepeatPassword must match Password");
+                }
+
+                txtRepeatPassword.setStyle("-fx-border-color: green;");
+                handleErrLabelChange(null, txtRepeatPassword);
             } catch (Exception e) {
+                txtRepeatPassword.setStyle("-fx-border-color: red;");
                 handleErrLabelChange(e.getMessage(), txtRepeatPassword);
             } finally {
                 checkBtnCreateAccount();
@@ -609,61 +419,31 @@ public class SignUpController {
     }
     
     /**
-    * Manejador del evento de cambio de texto en el campo Phone.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del texto.
-    * @param newValue El nuevo valor del texto.
-    */
-    private void handleTxtPhoneTextChange(ObservableValue observable, 
-            String oldValue, String newValue) {
-        try {
-            if (!newValue.matches("\\d*")) {
-                throw new Exception("Phone must contain only numbers");
-            } else if (newValue.length() > 15 || newValue.length() < 7) {
-                txtPhone.setText(newValue.substring(0, 15));
-                throw new Exception("Phone length must be on 7-15");
-            } else {
-                txtPhone.setStyle("-fx-border-color: green; "
-                        + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                handleErrLabelChange(null, txtPhone);
-            }
-        } catch (Exception e) {
-            txtPhone.setStyle("-fx-border-color: red; "
-                    + "-fx-background-radius: 5; -fx-border-radius: 5;");
-            handleErrLabelChange(e.getMessage(), txtPhone);
-        }
-    }
-    
-    /**
-    * Manejador del evento de cambio de foco en el campo Phone.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del foco.
-    * @param newValue El nuevo valor del foco.
-    */
-    private void handleTxtPhoneFocusChange(ObservableValue observable, 
-            Boolean oldValue, Boolean newValue) {
+     * Manejador del evento de cambio de foco en el campo Phone. Valida que no
+     * esté vacío, que contenga solo números y tenga entre 7 y 15 dígitos.
+     *
+     * @param observable El valor observable que cambia.
+     * @param oldValue El valor anterior del foco.
+     * @param newValue El nuevo valor del foco.
+     */
+    private void handleTxtPhoneFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (!newValue) {
-            String text = txtPhone.getText();
             try {
-                if (text == null || text.trim().isEmpty()) {
-                    txtPhone.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
+                String text = txtPhone.getText().trim();
+                if (text.isEmpty()) {
                     throw new Exception("Phone must not be empty");
-                } else if (!text.matches("\\d*")) {
-                    txtPhone.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    throw new Exception("Phone must contain only numbers");
-                } else if (text.length() > 15 || text.length() < 7) {
-                    txtPhone.setText(text.substring(0, 15));
-                    throw new Exception("Phone length must be on 7-15");
-                } else {
-                    txtPhone.setStyle("-fx-border-color: green; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    handleErrLabelChange(null, txtPhone);
                 }
+                if (!text.matches("\\d+")) {
+                    throw new Exception("Phone must contain only numbers");
+                }
+                if (text.length() < 7 || text.length() > 15) {
+                    throw new Exception("Phone length must be between 7 and 15 digits");
+                }
+
+                txtPhone.setStyle("-fx-border-color: green;");
+                handleErrLabelChange(null, txtPhone);
             } catch (Exception e) {
+                txtPhone.setStyle("-fx-border-color: red;");
                 handleErrLabelChange(e.getMessage(), txtPhone);
             } finally {
                 checkBtnCreateAccount();
@@ -672,61 +452,33 @@ public class SignUpController {
     }
     
     /**
-    * Manejador del evento de cambio de texto en el campo City.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del texto.
-    * @param newValue El nuevo valor del texto.
-    */
-    private void handleTxtCityTextChange(ObservableValue observable, 
-            String oldValue, String newValue) {
-        try {
-            if (!newValue.matches("[a-zA-Z]+")) {
-                throw new Exception("City must contain only letters");
-            } else if (newValue.length() > 20) {
-                txtCity.setText(newValue.substring(0, 20));
-                throw new Exception("City cannot exceeded length of 20");
-            } else {
-                txtCity.setStyle("-fx-border-color: green; "
-                        + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                handleErrLabelChange(null, txtCity);
-            }
-        } catch (Exception e) {
-            txtCity.setStyle("-fx-border-color: red; "
-                    + "-fx-background-radius: 5; -fx-border-radius: 5;");
-            handleErrLabelChange(e.getMessage(), txtCity);
-        }
-    }
-    
-    /**
-    * Manejador del evento de cambio de foco en el campo City.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del foco.
-    * @param newValue El nuevo valor del foco.
-    */
-    private void handleTxtCityFocusChange(ObservableValue observable, 
-            Boolean oldValue, Boolean newValue) {
+     * Manejador del evento de cambio de foco en el campo City. Valida que no
+     * esté vacío, que contenga solo letras y espacios, y que no supere 20
+     * caracteres.
+     *
+     * @param observable El valor observable que cambia.
+     * @param oldValue El valor anterior del foco.
+     * @param newValue El nuevo valor del foco.
+     */
+    private void handleTxtCityFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (!newValue) {
-            String text = txtCity.getText();
             try {
-                if (text == null || text.trim().isEmpty()) {
-                    txtCity.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
+                String text = txtCity.getText().trim();
+                if (text.isEmpty()) {
                     throw new Exception("City must not be empty");
-                } else if (!text.matches("[a-zA-Z]+")) {
-                    txtCity.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    throw new Exception("City must contain only letters");
-                } else if (text.length() > 20) {
-                    txtCity.setText(text.substring(0, 20));
-                    throw new Exception("City cannot exceeded length of 20");
-                } else {
-                    txtCity.setStyle("-fx-border-color: green; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    handleErrLabelChange(null, txtCity);
                 }
+                if (!text.matches("[a-zA-Z\\s]+")) {
+                    throw new Exception("City must contain only letters and spaces");
+                }
+                if (text.length() > 20) {
+                    txtCity.setText(text.substring(0, 20));
+                    throw new Exception("City cannot exceed length of 20");
+                }
+
+                txtCity.setStyle("-fx-border-color: green;");
+                handleErrLabelChange(null, txtCity);
             } catch (Exception e) {
+                txtCity.setStyle("-fx-border-color: red;");
                 handleErrLabelChange(e.getMessage(), txtCity);
             } finally {
                 checkBtnCreateAccount();
@@ -735,120 +487,65 @@ public class SignUpController {
     }
     
     /**
-    * Manejador del evento de cambio de texto en el campo State.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del texto.
-    * @param newValue El nuevo valor del texto.
-    */
-    private void handleTxtStateTextChange(ObservableValue observable, 
-            String oldValue, String newValue) {
-        try {
-            if (!newValue.matches("[a-zA-Z]+")) {
-                throw new Exception("State must contain only letters");
-            } else if (newValue.length() > 30) {
-                txtState.setText(newValue.substring(0, 30));
-                throw new Exception("State cannot exceeded length of 30");
-            } else {
-                txtState.setStyle("-fx-border-color: green; "
-                        + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                handleErrLabelChange(null, txtState);
-            }
-        } catch (Exception e) {
-            txtState.setStyle("-fx-border-color: red; "
-                    + "-fx-background-radius: 5; -fx-border-radius: 5;");
-            handleErrLabelChange(e.getMessage(), txtState);
-        }
-    }
-    
-    /**
-    * Manejador del evento de cambio de foco en el campo State.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del foco.
-    * @param newValue El nuevo valor del foco.
-    */
-    private void handleTxtStateFocusChange(ObservableValue observable, 
-            Boolean oldValue, Boolean newValue) {
+     * Manejador del evento de cambio de foco en el campo State. Valida que no
+     * esté vacío, que contenga solo letras y espacios, y que no supere 20
+     * caracteres.
+     *
+     * @param observable El valor observable que cambia.
+     * @param oldValue El valor anterior del foco.
+     * @param newValue El nuevo valor del foco.
+     */
+    private void handleTxtStateFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (!newValue) {
-            String text = txtState.getText();
             try {
-                if (text == null || text.trim().isEmpty()) {
-                    txtState.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
+                String text = txtState.getText().trim();
+                if (text.isEmpty()) {
                     throw new Exception("State must not be empty");
-                } else if (!text.matches("[a-zA-Z]+")) {
-                    txtState.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    throw new Exception("State must contain only letters");
-                } else if (text.length() > 30) {
-                    txtState.setText(text.substring(0, 30));
-                    throw new Exception("State cannot exceeded length of 30");
-                } else {
-                    txtState.setStyle("-fx-border-color: green; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    handleErrLabelChange(null, txtState);
                 }
+                if (!text.matches("[a-zA-Z\\s]+")) {
+                    throw new Exception("State must contain only letters and spaces");
+                }
+                if (text.length() > 20) {
+                    txtState.setText(text.substring(0, 20));
+                    throw new Exception("State cannot exceed length of 20");
+                }
+
+                txtState.setStyle("-fx-border-color: green;");
+                handleErrLabelChange(null, txtState);
             } catch (Exception e) {
+                txtState.setStyle("-fx-border-color: red;");
                 handleErrLabelChange(e.getMessage(), txtState);
             } finally {
                 checkBtnCreateAccount();
             }
         }
     }
+
     
     /**
-    * Manejador del evento de cambio de texto en el campo Street.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del texto.
-    * @param newValue El nuevo valor del texto.
-    */
-    private void handleTxtStreetTextChange(ObservableValue observable, 
-            String oldValue, String newValue) {
-        try {
-            if (newValue == null || newValue.trim().isEmpty()) {
-                throw new Exception("Street must not be empty");
-            } else if (newValue.length() > 50) {
-                txtStreet.setText(newValue.substring(0, 50));
-                throw new Exception("Street cannot exceeded length of 50");
-            } else {
-                txtStreet.setStyle("-fx-border-color: green; "
-                        + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                handleErrLabelChange(null, txtStreet);
-            }
-        } catch (Exception e) {
-            txtStreet.setStyle("-fx-border-color: red; "
-                    + "-fx-background-radius: 5; -fx-border-radius: 5;");
-            handleErrLabelChange(e.getMessage(), txtStreet);
-        }
-    }
-    
-    /**
-    * Manejador del evento de cambio de foco en el campo Street.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del foco.
-    * @param newValue El nuevo valor del foco.
-    */
-    private void handleTxtStreetFocusChange(ObservableValue observable, 
-            Boolean oldValue, Boolean newValue) {
+     * Manejador del evento de cambio de foco en el campo Street. Valida que no
+     * esté vacío, que tenga letras, números o símbolos válidos, y que no supere
+     * 50 caracteres.
+     */
+    private void handleTxtStreetFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (!newValue) {
-            String text = txtStreet.getText();
             try {
-                if (text == null || text.trim().isEmpty()) {
-                    txtStreet.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
+                String text = txtStreet.getText().trim();
+                if (text.isEmpty()) {
                     throw new Exception("Street must not be empty");
-                } else if (text.length() > 50) {
-                    txtStreet.setText(text.substring(0, 50));
-                    throw new Exception("Street cannot exceeded length of 50");
-                } else {
-                    txtStreet.setStyle("-fx-border-color: green; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    handleErrLabelChange(null, txtStreet);
                 }
+                if (!text.matches("[\\p{L}\\p{N}\\s,\\.-/ºª#]+")) {
+                    throw new Exception("Street contains invalid characters");
+                }
+                if (text.length() > 50) {
+                    txtStreet.setText(text.substring(0, 50));
+                    throw new Exception("Street cannot exceed length of 50");
+                }
+
+                txtStreet.setStyle("-fx-border-color: green;");
+                handleErrLabelChange(null, txtStreet);
             } catch (Exception e) {
+                txtStreet.setStyle("-fx-border-color: red;");
                 handleErrLabelChange(e.getMessage(), txtStreet);
             } finally {
                 checkBtnCreateAccount();
@@ -857,65 +554,35 @@ public class SignUpController {
     }
     
     /**
-    * Manejador del evento de cambio de texto en el campo Zip.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del texto.
-    * @param newValue El nuevo valor del texto.
-    */
-    private void handleTxtZipTextChange(ObservableValue observable, 
-            String oldValue, String newValue) {
-        try {
-            if (!newValue.matches("\\d+")) {
-                throw new Exception("Zip must contain only numbers");
-            } else if (newValue.length() != 5) {
-                if (newValue.length() > 5) {
-                    txtZip.setText(newValue.substring(0, 5));
-                }
-                throw new Exception("Zip must have length of 5");
-            } else {
-                txtZip.setStyle("-fx-border-color: green; "
-                        + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                handleErrLabelChange(null, txtZip);
-            }
-        } catch (Exception e) {
-            txtZip.setStyle("-fx-border-color: red; -fx-background-radius: 5; "
-                    + "-fx-border-radius: 5;");
-            handleErrLabelChange(e.getMessage(), txtZip);
-        }
-    }
-    
-    /**
-    * Manejador del evento de cambio de foco en el campo Zip.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del foco.
-    * @param newValue El nuevo valor del foco.
-    */
-    private void handleTxtZipFocusChange(ObservableValue observable, 
-            Boolean oldValue, Boolean newValue) {
+     * Manejador del evento de cambio de foco en el campo Zip. Valida que no
+     * esté vacío, que contenga solo números y que tenga exactamente 5 dígitos.
+     *
+     * @param observable El valor observable que cambia.
+     * @param oldValue El valor anterior del foco.
+     * @param newValue El nuevo valor del foco.
+     */
+    private void handleTxtZipFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (!newValue) {
-            String text = txtZip.getText();
             try {
-                if (text == null || text.trim().isEmpty()) {
-                    txtZip.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
+                String text = txtZip.getText().trim();
+                if (text.isEmpty()) {
                     throw new Exception("Zip must not be empty");
-                } else if (!text.matches("\\d+")) {
-                    txtZip.setStyle("-fx-border-color: red; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
+                }
+                if (!text.matches("\\d+")) {
                     throw new Exception("Zip must contain only numbers");
-                } else if (text.length() != 5) {
+                }
+                if (text.length() != 5) {
                     if (text.length() > 5) {
-                        txtZip.setText(text.substring(0, 5));
+                        text = text.substring(0, 5);
+                        txtZip.setText(text);
                     }
                     throw new Exception("Zip must have length of 5");
-                } else {
-                    txtZip.setStyle("-fx-border-color: green; "
-                            + "-fx-background-radius: 5; -fx-border-radius: 5;");
-                    handleErrLabelChange(null, txtZip);
                 }
+
+                txtZip.setStyle("-fx-border-color: green;");
+                handleErrLabelChange(null, txtZip);
             } catch (Exception e) {
+                txtZip.setStyle("-fx-border-color: red;");
                 handleErrLabelChange(e.getMessage(), txtZip);
             } finally {
                 checkBtnCreateAccount();
@@ -931,7 +598,7 @@ public class SignUpController {
     * @param message Mensaje de error a mostrar (null para limpiar)
      * @param textField Campo de texto asociado
     */
-    private void handleErrLabelChange(String message, TextField textField) {
+    private void handleErrLabelChange(String message, javafx.scene.control.TextInputControl textField) {
         if (errLabels == null || txtFields == null) return;
 
         int index = txtFields.indexOf(textField);
@@ -951,68 +618,41 @@ public class SignUpController {
     private void checkBtnCreateAccount() {
         boolean allValid = true;
 
-        try {
-            String firstName = txtFirstName.getText();
-            if (firstName == null || !firstName.matches("[a-zA-Z]{1,20}")) {
-                allValid = false;
-            }
-
-            String lastName = txtLastName.getText();
-            if (lastName == null || !lastName.matches("[a-zA-Z]{1,20}")) {
-                allValid = false;
-            }
-
-            String middleInitial = txtMiddleInitial.getText();
-            if (middleInitial == null || !middleInitial.matches("[a-zA-Z]{1}")) {
-                allValid = false;
-            }
-
-            String email = txtEmail.getText();
-            if (email == null || !email.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+${1-50}")) {
-                allValid = false;
-            }
-
-            String password = txtPassword.getText();
-            if (password == null || !password.matches("[a-zA-Z0-9]") || 
-                    password.length() < 8) {
-                allValid = false;
-            }
-
-            String repeatPassword = txtRepeatPassword.getText();
-            if (repeatPassword == null || !repeatPassword.equals(password)) {
-                allValid = false;
-            }
-
-            String phone = txtPhone.getText();
-            if (phone == null || !phone.matches("\\d{7,15}")) {
-                allValid = false;
-            }
-
-            String city = txtCity.getText();
-            if (city == null || !city.matches("[a-zA-Z\\s]{1,20}")) {
-                allValid = false;
-            }
-
-            String state = txtState.getText();
-            if (state == null || !state.matches("[a-zA-Z\\s]{1,30}")) {
-                allValid = false;
-            }
-
-            String street = txtStreet.getText();
-            if (street == null || street.trim().isEmpty() || street.length() > 50) {
-                allValid = false;
-            }
-
-            String zip = txtZip.getText();
-            if (zip == null || !zip.matches("\\d{5}")) {
-                allValid = false;
-            }
-            
-            // Activar o desactivar el botón según la validez de todos los campos
-            btnCreateAccount.setDisable(!allValid);
-        } catch (Exception e) {
-            LOGGER.info("Error during form validation: ");
+        if (!txtFirstName.getText().matches("[a-zA-Z]{1,20}")) {
             allValid = false;
         }
+        if (!txtLastName.getText().matches("[a-zA-Z]{1,20}")) {
+            allValid = false;
+        }
+        if (!txtMiddleInitial.getText().matches("[a-zA-Z]{1}")) {
+            allValid = false;
+        }
+        if (!txtEmail.getText().matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            allValid = false;
+        }
+        if (!txtPassword.getText().matches("[a-zA-Z0-9.*!@#$%&\\-_]{8,}")) {
+            allValid = false;
+        }
+        if (!txtRepeatPassword.getText().equals(txtPassword.getText())) {
+            allValid = false;
+        }
+        if (!txtPhone.getText().matches("\\d{7,15}")) {
+            allValid = false;
+        }
+        if (!txtCity.getText().matches("[a-zA-Z\\s]{1,20}")) {
+            allValid = false;
+        }
+        if (!txtState.getText().matches("[a-zA-Z\\s]{1,30}")) {
+            allValid = false;
+        }
+        String street = txtStreet.getText();
+        if (street == null || street.trim().isEmpty() || street.length() > 50) {
+            allValid = false;
+        }
+        if (!txtZip.getText().matches("\\d{5}")) {
+            allValid = false;
+        }
+
+        btnCreateAccount.setDisable(!allValid);
     }
 }
