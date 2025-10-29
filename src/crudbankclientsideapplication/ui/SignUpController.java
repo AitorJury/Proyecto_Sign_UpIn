@@ -66,9 +66,13 @@ public class SignUpController {
     @FXML
     private Label errPhone;
     @FXML
-    private Label errCityState;
+    private Label errCity;
     @FXML
-    private Label errStreetZip;
+    private Label errState;
+    @FXML
+    private Label errStreet;
+    @FXML
+    private Label errZip;
         
     // Botones y Links.
     @FXML
@@ -98,7 +102,7 @@ public class SignUpController {
         errLabels = Arrays.asList(
             errFirstName, errLastName, errMiddleInitial, errEmail,
             errPassword, errRepeatPassword, errPhone,
-            errCityState, errStreetZip);
+            errCity, errState, errStreet, errZip);
     }
     
     /**
@@ -917,19 +921,20 @@ public class SignUpController {
         if(errText == null) {
             if (changedField != null) {
                 int i = txtFields.indexOf(changedField);
-                if (i >= 0) {
+                if (i >= 0 && i < errLabels.size()) {
                     errLabels.get(i).setText("");
                 } else {
-                    for (Label errLabel : errLabels) {
-                        errLabel.setText("");
+                    for (int idx = 0; idx < Math.min(txtFields.size(), errLabels.size()); idx++) {
+                        errLabels.get(idx).setText("");
                     }
-            }
-        } else {
-            for (int i = 0; i < txtFields.size(); i++) {
-                TextField txtField = txtFields.get(i);
-                Label errLabel = errLabels.get(i);
-                if (changedField == txtField) {
-                    errLabel.setText(errText);
+                }
+            } else {
+                for (int i = 0; i < txtFields.size(); i++) {
+                    TextField txtField = txtFields.get(i);
+                    Label errLabel = errLabels.get(i);
+                    if (changedField == txtField) {
+                        errLabel.setText(errText);
+                    }
                 }
             }
         }
@@ -999,7 +1004,7 @@ public class SignUpController {
             }
 
         } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Error during form validation: " + e.getMessage(), e);
+            LOGGER.info("Error during form validation: ");
             allValid = false;
         }
 

@@ -127,7 +127,9 @@
                <Tooltip text="Indicate the city and province where you reside" />
             </tooltip>
          </Label>
-         <Label fx:id="errCityState" layoutX="740.0" layoutY="499.0" 
+         <Label fx:id="errCity" layoutX="740.0" layoutY="499.0" 
+                textFill="red" />
+         <Label fx:id="errState" layoutX="740.0" layoutY="499.0" 
                 textFill="red" />
    
          <Label layoutX="207.0" layoutY="546.0" text="Street / ZIP:" />
@@ -142,7 +144,9 @@
                <Tooltip text="Enter your full address and postal code" />
             </tooltip>
          </Label>
-         <Label fx:id="errStreetZip" layoutX="740.0" layoutY="539.0" 
+         <Label fx:id="errStreet" layoutX="740.0" layoutY="539.0" 
+                textFill="red" />
+         <Label fx:id="errZip" layoutX="740.0" layoutY="539.0" 
                 textFill="red" />
    
          <Button fx:id="btnExit" layoutX="363.0" layoutY="590.0" 
