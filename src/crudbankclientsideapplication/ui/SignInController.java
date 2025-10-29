@@ -5,19 +5,22 @@
  */
 package crudbankclientsideapplication.ui;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.scene.control.ButtonType;
 
 /**
  *
@@ -46,48 +49,82 @@ public class SignInController {
         //la ventana no debe ser redimensaionable
         stage.setResizable(false);
         //Asociar eventos a manejadores
-
         btnExit.setOnAction(this::handleBtnExitOnAction);
         btnSignIn.setOnAction(this::handleBtnSignInOnAction);
+        linkSignUp.setOnAction(this::handleLinkOnAction);
+        
         //Asociar manejadores de propierties
         txtEmail.focusedProperty().addListener(this::handeltxtEmailFocusChange);
         txtEmail.textProperty().addListener(this::handeltxtEmailTextChange);
-
-        txtPassword.focusedProperty().addListener(this::handeltxtPasswordFocusChange);
         txtPassword.textProperty().addListener(this::handeltxtPasswordTextChange);
 
-        //boton exit
-        //Pedir confirmación al usuario para cerrar la aplicación.
-        //Si confirma, se cerrará la aplicación.
-        //Si no confirma, la ventana permanecerá abierta.
-        //Si ocurre un error al cerrar la página se lanzará una excepción y se mostrará que no se puede cerrar la aplicación.
-        //Mostrar la ventana
         stage.show();
+        btnSignIn.setDisable(true);
         
-        List<TextField> fields = new ArrayList<>();
-        fields.add(txtEmail);
-        fields.add(txtPassword);
-        
-        
-        
-        
-        // Establecer el título de la ventana a “Sign In”.
-        //La ventana no debe ser redimensionable.
         //Preparar el formulario de entrada con los campos de correo y contraseña vacíos.
         //La ventana es no modal.
         //Enfocar automáticamente el campo de correo al abrir la ventana.
 
     }
-    private void createArray(){
-        
+   
+    
+    private void handleLabelError(String message){
+        lblError.setText(message);
+    }
+    
+    //
+    private void handleLinkOnAction(ActionEvent event) {
+        try {
+            //Cerrar la ventana actual.
+            //Abrir la ventana de registro de nuevo usuario.
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUp.fxml"));
+            Parent root = loader.load();
+            Scene scene = ((Node) event.getSource()).getScene();
+            scene.setRoot(root);
+        } catch (Exception e) {
+
+        }
     }
 
     private void handleBtnExitOnAction(ActionEvent event) {
+        //boton exit
+        try {
+            // Mostrar alert modal de confirmación para salir de la aplicación
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to exit?");
+            alert.setTitle("Exit the application");
+            alert.setHeaderText("Departure confirmation");
+            alert.showAndWait().ifPresent(resp -> {
+                // Si confirma, cerrar la aplicación
+                if (resp == ButtonType.OK) {
+                    Stage stage = (Stage) btnExit.getScene().getWindow();
+                    stage.close();
+                }//Si no confirma, la ventana permanecerá abierta.
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+
+ 
+        
     }
 
     private void handleBtnSignInOnAction(ActionEvent event) {
-
+       try{
+            String email = txtEmail.getText();
+        String password = txtPassword.getText();
+        if(!this.txtEmail.getText().contains("@")|| !this.txtEmail.getText().contains(".")){
+               throw new Exception ("The email must have @ an email and a domain");
+           } else {
+            handleLabelError("Checking in the database");
+        }
+       }
+        catch (Exception e){
+                handleLabelError(e.getMessage());
+                }
+       finally{
+           enableButtonSignIn();
+       }
     }
 
     /**
@@ -96,34 +133,41 @@ public class SignInController {
      * @param oldValue
      * @param newValue
      */
-    
-    //Configuración del botón para que esté deshabilitado al entrar en la aplicación
-    //hasta que estén rellenados los 2 
-    
-    //Este es el método que establece que al iniciar la aplicación el botón
-    //aparezca deshabilitado
-    //Este botón hace que automáticamente cuando en el texto se escriba algo
-    //le envie a la funcion initialButtonSignIn() el cambio que ha habido.
-    
-     
-      
-    
     private void handeltxtEmailTextChange(ObservableValue observable, String oldValue, String newValue) {
-        if (this.txtEmail.getText().isEmpty()) {
+       try{
+           if (this.txtEmail.getText().isEmpty()) {
             txtEmail.setStyle(" -fx-border-color: red");
-        } 
+             throw new Exception ("The email field must not be left empty.");
+        } else {
+               txtEmail.setStyle("-fx-border-color: white");
+           
+           }
+          
+       }catch(Exception e){
+           //lanzar excepcion de error
+           handleLabelError(e.getMessage());
+                   }
+       finally{
+           enableButtonSignIn();
+       }
+        
 
     }
 
     private void handeltxtPasswordTextChange(ObservableValue observable, String oldValue, String newValue) {
-        if (this.txtPassword.getText().isEmpty()) {
-
+        try{
+           if (this.txtPassword.getText().isEmpty()) {
+            txtPassword.setStyle(" -fx-border-color: red");
+             throw new Exception ("The password field must not be left empty.");
         } else {
-
-        }
+               txtPassword.setStyle("-fx-border-color: white");
+           }
+           enableButtonSignIn();
+       }catch(Exception e){
+           //lanzar excepcion de error
+           handleLabelError(e.getMessage());
+                   }
     }
-
-   
 
     /**
      *
@@ -138,11 +182,21 @@ public class SignInController {
 
         }
     }
+    private void enableButtonSignIn(){
+        boolean validEmail = validEmail();
+        boolean validPassword = validPassword();
+        btnSignIn.setDisable(!(validEmail && validPassword));
 
-    private void handeltxtPasswordFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
-
+        
     }
-   
-
+    private boolean validEmail(){
+        boolean isValidEmail = txtEmail.getText().isEmpty();
+        return !isValidEmail;
+    }
+    private boolean validPassword(){
+        boolean isValidPsw = txtPassword.getText().isEmpty();
+        
+        return !isValidPsw;
+    }
 
 }
