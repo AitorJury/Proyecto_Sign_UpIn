@@ -5,6 +5,8 @@
  */
 package crudbankclientsideapplication.ui;
 
+import crudbankclientapplication.logic.CustomerRESTClient;
+import crudbankclientsideapplication.model.Customer;
 import java.util.logging.Logger;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
@@ -52,7 +54,7 @@ public class SignInController {
         btnExit.setOnAction(this::handleBtnExitOnAction);
         btnSignIn.setOnAction(this::handleBtnSignInOnAction);
         linkSignUp.setOnAction(this::handleLinkOnAction);
-        
+
         //Asociar manejadores de propierties
         txtEmail.focusedProperty().addListener(this::handeltxtEmailFocusChange);
         txtEmail.textProperty().addListener(this::handeltxtEmailTextChange);
@@ -60,18 +62,16 @@ public class SignInController {
 
         stage.show();
         btnSignIn.setDisable(true);
-        
+
         //Preparar el formulario de entrada con los campos de correo y contraseña vacíos.
         //La ventana es no modal.
         //Enfocar automáticamente el campo de correo al abrir la ventana.
-
     }
-   
-    
-    private void handleLabelError(String message){
+
+    private void handleLabelError(String message) {
         lblError.setText(message);
     }
-    
+
     //
     private void handleLinkOnAction(ActionEvent event) {
         try {
@@ -104,27 +104,28 @@ public class SignInController {
             e.printStackTrace();
         }
 
-
- 
-        
     }
 
     private void handleBtnSignInOnAction(ActionEvent event) {
-       try{
+        try {
             String email = txtEmail.getText();
-        String password = txtPassword.getText();
-        if(!this.txtEmail.getText().contains("@")|| !this.txtEmail.getText().contains(".")){
-               throw new Exception ("The email must have @ an email and a domain");
-           } else {
-            handleLabelError("Checking in the database");
+            String password = txtPassword.getText();
+            CustomerRESTClient client = new CustomerRESTClient();
+            Customer customer = new Customer();
+            //customer = client.findCustomerByEmailPassword_XML(client.getClass(), email, password);
+
+            if (!this.txtEmail.getText().contains("@") || !this.txtEmail.getText().contains(".")) {
+                throw new Exception("The email must have @ an email and a domain");
+
+                //200 bien
+            } else {
+                handleLabelError("Checking in the database");
+            }
+        } catch (Exception e) {
+            handleLabelError(e.getMessage());
+        } finally {
+            enableButtonSignIn();
         }
-       }
-        catch (Exception e){
-                handleLabelError(e.getMessage());
-                }
-       finally{
-           enableButtonSignIn();
-       }
     }
 
     /**
@@ -134,39 +135,37 @@ public class SignInController {
      * @param newValue
      */
     private void handeltxtEmailTextChange(ObservableValue observable, String oldValue, String newValue) {
-       try{
-           if (this.txtEmail.getText().isEmpty()) {
-            txtEmail.setStyle(" -fx-border-color: red");
-             throw new Exception ("The email field must not be left empty.");
-        } else {
-               txtEmail.setStyle("-fx-border-color: white");
-           
-           }
-          
-       }catch(Exception e){
-           //lanzar excepcion de error
-           handleLabelError(e.getMessage());
-                   }
-       finally{
-           enableButtonSignIn();
-       }
-        
+        try {
+            if (this.txtEmail.getText().isEmpty()) {
+                txtEmail.setStyle(" -fx-border-color: red");
+                throw new Exception("The email field must not be left empty.");
+            } else {
+                txtEmail.setStyle("-fx-border-color: white");
+
+            }
+
+        } catch (Exception e) {
+            //lanzar excepcion de error
+            handleLabelError(e.getMessage());
+        } finally {
+            enableButtonSignIn();
+        }
 
     }
 
     private void handeltxtPasswordTextChange(ObservableValue observable, String oldValue, String newValue) {
-        try{
-           if (this.txtPassword.getText().isEmpty()) {
-            txtPassword.setStyle(" -fx-border-color: red");
-             throw new Exception ("The password field must not be left empty.");
-        } else {
-               txtPassword.setStyle("-fx-border-color: white");
-           }
-           enableButtonSignIn();
-       }catch(Exception e){
-           //lanzar excepcion de error
-           handleLabelError(e.getMessage());
-                   }
+        try {
+            if (this.txtPassword.getText().isEmpty()) {
+                txtPassword.setStyle(" -fx-border-color: red");
+                throw new Exception("The password field must not be left empty.");
+            } else {
+                txtPassword.setStyle("-fx-border-color: white");
+            }
+            enableButtonSignIn();
+        } catch (Exception e) {
+            //lanzar excepcion de error
+            handleLabelError(e.getMessage());
+        }
     }
 
     /**
@@ -182,20 +181,22 @@ public class SignInController {
 
         }
     }
-    private void enableButtonSignIn(){
+
+    private void enableButtonSignIn() {
         boolean validEmail = validEmail();
         boolean validPassword = validPassword();
         btnSignIn.setDisable(!(validEmail && validPassword));
 
-        
     }
-    private boolean validEmail(){
+
+    private boolean validEmail() {
         boolean isValidEmail = txtEmail.getText().isEmpty();
         return !isValidEmail;
     }
-    private boolean validPassword(){
+
+    private boolean validPassword() {
         boolean isValidPsw = txtPassword.getText().isEmpty();
-        
+
         return !isValidPsw;
     }
 

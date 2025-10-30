@@ -40,11 +40,11 @@ public class CustomerRESTClient {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_JSON));
     }
 
-    public <T> T findCustomerByEmailPassword_XML(Class<T> responseType, String email, String password) throws javax.ws.rs.ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("sigin/{0}/{1}", new Object[]{email, password}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
-    }
+        public <T> T findCustomerByEmailPassword_XML(Class<T> responseType ,String email, String password) throws javax.ws.rs.ClientErrorException {
+            WebTarget resource = webTarget;
+            resource = resource.path(java.text.MessageFormat.format("sigin/{0}/{1}", new Object[]{email, password}));
+            return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+        }
 
     public <T> T findCustomerByEmailPassword_JSON(Class<T> responseType, String email, String password) throws javax.ws.rs.ClientErrorException {
         WebTarget resource = webTarget;
