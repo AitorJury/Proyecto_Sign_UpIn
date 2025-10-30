@@ -10,6 +10,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -153,6 +154,7 @@ public class SignUpController {
                 handleTxtStreetFocusChange);
         txtZip.focusedProperty().addListener(this::
                 handleTxtZipFocusChange);
+        linkSignIn.setOnAction(this::handleLinkSignInAction);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -202,10 +204,22 @@ public class SignUpController {
             
             CustomerRESTClient client = new CustomerRESTClient();
             client.create_XML(customer);
+            /*Customer loggedCustomer = client.login(customer.getEmail(),customer.getPassword());
             client.close();
-            new Alert(Alert.AlertType.INFORMATION, "Customer created successfully!")
-                    .showAndWait();
-            // Abrir Main
+            if (loggedCustomer != null) {
+                new Alert(Alert.AlertType.INFORMATION, "Customer created and logged in successfully!")
+                        .showAndWait();
+
+                // Abrir main.fxml
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/crudbankclientsideapplication/ui/main.fxml"));
+                Parent root = loader.load();
+                Stage stage = (Stage) btnCreateAccount.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Main");
+                stage.show();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Login failed after account creation.").showAndWait();
+            }*/
         } catch (ForbiddenException e) {
             // Usuario no autorizado
             e.printStackTrace();
@@ -654,5 +668,28 @@ public class SignUpController {
         }
 
         btnCreateAccount.setDisable(!allValid);
+    }
+    
+    /**
+     * Conecta con un hyperlink el Sign In.
+     */
+    private void handleLinkSignInAction(ActionEvent Event) {
+        try {
+            // Cargar FXML de SignIn
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/crudbankclientsideapplication/ui/SignIn.fxml"));
+            Parent root = loader.load();
+
+            // Obtener la ventana actual
+            Stage stage = (Stage) linkSignIn.getScene().getWindow();
+            
+            // Cambiar la escena
+            stage.setScene(new Scene(root));
+            stage.setTitle("Sign In");
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Could not open Sign In window.").showAndWait();
+        }
     }
 }
