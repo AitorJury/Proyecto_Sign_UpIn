@@ -142,8 +142,8 @@ public class SignUpController {
                 handleTxtEmailFocusChange);
         txtPassword.textProperty().addListener(this::
                 handleTxtPasswordTextChange);
-        txtRepeatPassword.focusedProperty().addListener(this::
-                handleTxtRepeatPasswordFocusChange);
+        txtRepeatPassword.textProperty().addListener(this::
+                handleTxtRepeatPasswordTextChange);
         txtPhone.focusedProperty().addListener(this::
                 handleTxtPhoneFocusChange);
         txtCity.focusedProperty().addListener(this::
@@ -201,25 +201,11 @@ public class SignUpController {
             customer.setState(txtState.getText());
             customer.setStreet(txtStreet.getText());
             customer.setZip(Integer.parseInt(txtZip.getText()));
-            
             CustomerRESTClient client = new CustomerRESTClient();
             client.create_XML(customer);
-            /*Customer loggedCustomer = client.login(customer.getEmail(),customer.getPassword());
-            client.close();
-            if (loggedCustomer != null) {
-                new Alert(Alert.AlertType.INFORMATION, "Customer created and logged in successfully!")
+            
+            new Alert(Alert.AlertType.INFORMATION, "Customer created and logged in successfully!")
                         .showAndWait();
-
-                // Abrir main.fxml
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/crudbankclientsideapplication/ui/main.fxml"));
-                Parent root = loader.load();
-                Stage stage = (Stage) btnCreateAccount.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.setTitle("Main");
-                stage.show();
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Login failed after account creation.").showAndWait();
-            }*/
         } catch (ForbiddenException e) {
             // Usuario no autorizado
             e.printStackTrace();
@@ -329,103 +315,6 @@ public class SignUpController {
             } catch (Exception e) {
                 txtMiddleInitial.setStyle("-fx-border-color: red;");
                 handleErrLabelChange(e.getMessage(), txtMiddleInitial);
-            } finally {
-                checkBtnCreateAccount();
-            }
-        }
-    }
-
-    
-    /**
-     * Manejador del evento de cambio de foco en el campo Email. Valida formato
-     * y longitud al perder el foco.
-     *
-     * @param observable El valor observable que cambia.
-     * @param oldValue El valor anterior del foco.
-     * @param newValue El nuevo valor del foco.
-     */
-    private void handleTxtEmailFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
-        if (!newValue) {
-            try {
-                String text = txtEmail.getText().trim();
-                if (text.isEmpty()) {
-                    throw new Exception("Email must not be empty");
-                }
-                if (!text.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
-                    throw new Exception("Email format invalid");
-                }
-                if (text.length() > 50) {
-                    txtEmail.setText(text.substring(0, 50));
-                    throw new Exception("Email cannot exceed length of 50");
-                }
-
-                txtEmail.setStyle("-fx-border-color: green;");
-                handleErrLabelChange(null, txtEmail);
-            } catch (Exception e) {
-                txtEmail.setStyle("-fx-border-color: red;");
-                handleErrLabelChange(e.getMessage(), txtEmail);
-            } finally {
-                checkBtnCreateAccount();
-            }
-        }
-    }
-    
-    /**
-     * Manejador del evento de cambio de foco en el campo Password. Valida que
-     * no esté vacío, que solo contenga letras y números, y que tenga al menos 8
-     * caracteres.
-     *
-     * @param observable El valor observable que cambia.
-     * @param oldValue El valor anterior del foco.
-     * @param newValue El nuevo valor del foco.
-     */
-    private void handleTxtPasswordTextChange(ObservableValue observable, String oldValue, String newValue) {
-            try {
-                if (newValue.isEmpty()) {
-                    throw new Exception("Password must not be empty");
-                }
-                if (!newValue.matches("[a-zA-Z0-9.*!@#$%&\\-_]{8,}")) {
-                    throw new Exception("Password contains invalid characters");
-                }
-                if (newValue.length() < 8) {
-                    throw new Exception("Password must be at least 8 characters");
-                }
-
-                txtPassword.setStyle("-fx-border-color: green;");
-                handleErrLabelChange(null, txtPassword);
-            } catch (Exception e) {
-                txtPassword.setStyle("-fx-border-color: red;");
-                handleErrLabelChange(e.getMessage(), txtPassword);
-            } finally {
-                checkBtnCreateAccount();
-            }
-        }
-    
-    
-    /**
-     * Manejador del evento de cambio de foco en el campo RepeatPassword. Valida
-     * que no esté vacío y que coincida con el Password.
-     *
-     * @param observable El valor observable que cambia.
-     * @param oldValue El valor anterior del foco.
-     * @param newValue El nuevo valor del foco.
-     */
-    private void handleTxtRepeatPasswordFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
-        if (!newValue) {
-            try {
-                String text = txtRepeatPassword.getText().trim();
-                if (text.isEmpty()) {
-                    throw new Exception("RepeatPassword must not be empty");
-                }
-                if (!text.equals(txtPassword.getText())) {
-                    throw new Exception("RepeatPassword must match Password");
-                }
-
-                txtRepeatPassword.setStyle("-fx-border-color: green;");
-                handleErrLabelChange(null, txtRepeatPassword);
-            } catch (Exception e) {
-                txtRepeatPassword.setStyle("-fx-border-color: red;");
-                handleErrLabelChange(e.getMessage(), txtRepeatPassword);
             } finally {
                 checkBtnCreateAccount();
             }
@@ -605,6 +494,120 @@ public class SignUpController {
     }
     
     /**
+     * Manejador del evento de cambio de foco en el campo Email. Valida formato
+     * y longitud al perder el foco.
+     *
+     * @param observable El valor observable que cambia.
+     * @param oldValue El valor anterior del foco.
+     * @param newValue El nuevo valor del foco.
+     */
+    private void handleTxtEmailFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
+        if (!newValue) {
+            try {
+                String text = txtEmail.getText().trim();
+                if (text.isEmpty()) {
+                    throw new Exception("Email must not be empty");
+                }
+                if (!text.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+                    throw new Exception("Email format invalid");
+                }
+                if (text.length() > 50) {
+                    txtEmail.setText(text.substring(0, 50));
+                    throw new Exception("Email cannot exceed length of 50");
+                }
+
+                txtEmail.setStyle("-fx-border-color: green;");
+                handleErrLabelChange(null, txtEmail);
+            } catch (Exception e) {
+                txtEmail.setStyle("-fx-border-color: red;");
+                handleErrLabelChange(e.getMessage(), txtEmail);
+            } finally {
+                checkBtnCreateAccount();
+            }
+        }
+    }
+
+    /**
+     * Manejador del evento de cambio de texto en el campo Password. 
+     * Valida que no esté vacío y que tenga al menos 8 caracteres.
+     *
+     * @param observable El valor observable que cambia.
+     * @param oldValue El valor anterior del texto.
+     * @param newValue El nuevo valor del texto.
+     */
+    private void handleTxtPasswordTextChange(ObservableValue observable, String oldValue, String newValue) {
+        try {
+            if (newValue.isEmpty()) {
+                throw new Exception("Password must not be empty");
+            }
+            if (!newValue.matches("[a-zA-Z0-9.*!@#$%&\\-_]{8,}")) {
+                throw new Exception("Password contains invalid characters");
+            }
+            if (newValue.length() < 8) {
+                throw new Exception("Password must be at least 8 characters");
+            }
+
+            txtPassword.setStyle("-fx-border-color: green;");
+            handleErrLabelChange(null, txtPassword);
+        } catch (Exception e) {
+            txtPassword.setStyle("-fx-border-color: red;");
+            handleErrLabelChange(e.getMessage(), txtPassword);
+        } finally {
+            checkBtnCreateAccount();
+        }
+    }
+
+    /**
+     * Manejador del evento de cambio de texto en el campo RepeatPassword.
+     * Valida que no esté vacío y que coincida con el Password.
+     *
+     * @param observable El valor observable que cambia.
+     * @param oldValue El valor anterior del foco.
+     * @param newValue El nuevo valor del foco.
+     */
+    private void handleTxtRepeatPasswordTextChange(ObservableValue observable, String oldValue, String newValue) {
+        try {
+            if (newValue.isEmpty()) {
+                throw new Exception("RepeatPassword must not be empty");
+            }
+            if (!newValue.equals(txtPassword.getText())) {
+                throw new Exception("RepeatPassword must match Password");
+            }
+
+            txtRepeatPassword.setStyle("-fx-border-color: green;");
+            handleErrLabelChange(null, txtRepeatPassword);
+        } catch (Exception e) {
+            txtRepeatPassword.setStyle("-fx-border-color: red;");
+            handleErrLabelChange(e.getMessage(), txtRepeatPassword);
+        } finally {
+            checkBtnCreateAccount();
+        }
+    }
+    
+    /**
+     * Conecta con un hyperlink el Sign In.
+     */
+    private void handleLinkSignInAction(ActionEvent Event) {
+        try {
+            // Cargar FXML de SignIn
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/crudbankclientsideapplication/ui/SignIn.fxml"));
+            Parent root = loader.load();
+
+            // Obtener la ventana actual
+            Stage stage = (Stage) linkSignIn.getScene().getWindow();
+
+            // Cambiar la escena
+            stage.setScene(new Scene(root));
+            stage.setTitle("Sign In");
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Could not open Sign In window.").showAndWait();
+        }
+    }
+    
+    /**
     * Gestiona los labels de error de la ventana Sign Up.
     * Si el parámetro errText es null, se limpian todos los labels de error.  
     * Si errText contiene texto, se usará para mostrar un mensaje de error.
@@ -668,28 +671,5 @@ public class SignUpController {
         }
 
         btnCreateAccount.setDisable(!allValid);
-    }
-    
-    /**
-     * Conecta con un hyperlink el Sign In.
-     */
-    private void handleLinkSignInAction(ActionEvent Event) {
-        try {
-            // Cargar FXML de SignIn
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/crudbankclientsideapplication/ui/SignIn.fxml"));
-            Parent root = loader.load();
-
-            // Obtener la ventana actual
-            Stage stage = (Stage) linkSignIn.getScene().getWindow();
-            
-            // Cambiar la escena
-            stage.setScene(new Scene(root));
-            stage.setTitle("Sign In");
-            stage.show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Could not open Sign In window.").showAndWait();
-        }
     }
 }
