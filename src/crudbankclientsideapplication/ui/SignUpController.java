@@ -203,7 +203,7 @@ public class SignUpController {
             customer.setZip(Integer.parseInt(txtZip.getText()));
             CustomerRESTClient client = new CustomerRESTClient();
             client.create_XML(customer);
-            
+            client.close();
             new Alert(Alert.AlertType.INFORMATION, "Customer created and logged in successfully!")
                         .showAndWait();
         } catch (ForbiddenException e) {
