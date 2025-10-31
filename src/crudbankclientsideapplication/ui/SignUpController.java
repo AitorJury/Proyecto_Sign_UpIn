@@ -212,7 +212,7 @@ public class SignUpController {
             // Usuario no autorizado
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR,
-                    "You are not allowed to create a customer.").showAndWait();
+                    "The email exists. Please try another.").showAndWait();
         } catch (InternalServerErrorException e) {
             // Error del servidor
             e.printStackTrace();
@@ -310,8 +310,8 @@ public class SignUpController {
                     throw new Exception("MiddleInitial must contain only letters");
                 }
                 if (text.length() > 1) {
-                    text = text.substring(0, 1);
-                    txtMiddleInitial.setText(text);
+                    txtMiddleInitial.setText(text.substring(0, 1));
+                    throw new Exception("MiddleInitial cannot exceed length of 20");
                 }
 
                 txtMiddleInitial.setStyle("-fx-border-color: green;");
@@ -343,8 +343,11 @@ public class SignUpController {
                 if (!text.matches("\\d+")) {
                     throw new Exception("Phone must contain only numbers");
                 }
-                if (text.length() < 7 || text.length() > 15) {
-                    throw new Exception("Phone length must be between 7 and 15 digits");
+                if (text.length() < 7 || text.length() > 11) {
+                    if (text.length() > 11) {
+                        txtPhone.setText(text.substring(0,11));
+                    }
+                    throw new Exception("Phone length must be 7-11 digits");
                 }
 
                 txtPhone.setStyle("-fx-border-color: green;");
