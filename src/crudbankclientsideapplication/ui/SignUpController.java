@@ -202,8 +202,10 @@ public class SignUpController {
             customer.setState(txtState.getText());
             customer.setStreet(txtStreet.getText());
             customer.setZip(Integer.parseInt(txtZip.getText()));
+            
             client = new CustomerRESTClient();
             client.create_XML(customer);
+
             new Alert(Alert.AlertType.INFORMATION, "Customer created and logged in successfully!")
                         .showAndWait();
         } catch (ForbiddenException e) {
