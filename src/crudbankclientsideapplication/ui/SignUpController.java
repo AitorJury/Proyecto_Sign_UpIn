@@ -187,6 +187,7 @@ public class SignUpController {
     * @param event El evento de acción generado por el botón.
     */
     private void handleBtnCreateAccountOnAction(ActionEvent event) {
+        CustomerRESTClient client = null;
         try {
             // Crear un objeto Customer
             Customer customer = new Customer();
@@ -201,9 +202,8 @@ public class SignUpController {
             customer.setState(txtState.getText());
             customer.setStreet(txtStreet.getText());
             customer.setZip(Integer.parseInt(txtZip.getText()));
-            CustomerRESTClient client = new CustomerRESTClient();
+            client = new CustomerRESTClient();
             client.create_XML(customer);
-            client.close();
             new Alert(Alert.AlertType.INFORMATION, "Customer created and logged in successfully!")
                         .showAndWait();
         } catch (ForbiddenException e) {
@@ -221,6 +221,8 @@ public class SignUpController {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR,
                     "Unexpected error: " + e.getMessage()).showAndWait();
+        } finally {
+            client.close();
         }
     }
     
