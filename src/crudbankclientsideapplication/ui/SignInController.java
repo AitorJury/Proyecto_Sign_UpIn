@@ -7,6 +7,7 @@ package crudbankclientsideapplication.ui;
 
 import crudbankclientapplication.logic.CustomerRESTClient;
 import crudbankclientsideapplication.model.Customer;
+
 import java.util.logging.Logger;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
@@ -23,6 +24,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.control.ButtonType;
+import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.ProcessingException;
 
 /**
  *
@@ -72,6 +76,11 @@ public class SignInController {
         lblError.setText(message);
     }
 
+    private void handleAlertError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, message);
+        alert.showAndWait();
+    }
+
     //
     private void handleLinkOnAction(ActionEvent event) {
         try {
@@ -108,19 +117,27 @@ public class SignInController {
 
     private void handleBtnSignInOnAction(ActionEvent event) {
         try {
-            String email = txtEmail.getText();
-            String password = txtPassword.getText();
-            CustomerRESTClient client = new CustomerRESTClient();
-            Customer customer = new Customer();
-            //customer = client.findCustomerByEmailPassword_XML(client.getClass(), email, password);
-
-            if (!this.txtEmail.getText().contains("@") || !this.txtEmail.getText().contains(".")) {
+            String text = txtEmail.getText().trim();
+            if (!text.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
                 throw new Exception("The email must have @ an email and a domain");
 
                 //200 bien
             } else {
                 handleLabelError("Checking in the database");
             }
+            String email = txtEmail.getText().trim();
+            String password = txtPassword.getText().trim();
+            CustomerRESTClient client = new CustomerRESTClient();
+            Customer customer = client.findCustomerByEmailPassword_XML(Customer.class, email, password);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+            Parent root = loader.load();
+            Scene scene = ((Node) event.getSource()).getScene();
+            scene.setRoot(root);
+        } catch (NotAuthorizedException e) {
+            handleAlertError("The username or password does not match.");
+        } catch (InternalServerErrorException e) {
+            //LOGGER.log
+            handleAlertError("No conecta al servidor");
         } catch (Exception e) {
             handleLabelError(e.getMessage());
         } finally {
