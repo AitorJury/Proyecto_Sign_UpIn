@@ -117,18 +117,24 @@ public class SignInController {
 
     private void handleBtnSignInOnAction(ActionEvent event) {
         try {
+            //Validar si el correo tiene formato del correo (@ y un dominio)
             String text = txtEmail.getText().trim();
             if (!text.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+                //Si no coincide, se lanzará una excepción con el label de error y se mostrará un mensaje (“El correo o la contraseña no son correctos”)
                 throw new Exception("The email must have @ an email and a domain");
 
                 //200 bien
             } else {
                 handleLabelError("Checking in the database");
             }
+            //Conectará con la base de datos para validar la contraseña y el correo.
             String email = txtEmail.getText().trim();
             String password = txtPassword.getText().trim();
             CustomerRESTClient client = new CustomerRESTClient();
+            //Verificar que la contraseña coincida con la del usuario registrado. 
+            //Verificar que el correo y la contraseña existe en la base de datos.
             Customer customer = client.findCustomerByEmailPassword_XML(Customer.class, email, password);
+            //Si todo es correcto se abrirá la página “Main” y se cerrará la actual.
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
             Parent root = loader.load();
             Scene scene = ((Node) event.getSource()).getScene();
@@ -137,7 +143,7 @@ public class SignInController {
             handleAlertError("The username or password does not match.");
         } catch (InternalServerErrorException e) {
             //LOGGER.log
-            handleAlertError("No conecta al servidor");
+            handleAlertError("It cannot connect to the server.");
         } catch (Exception e) {
             handleLabelError(e.getMessage());
         } finally {
