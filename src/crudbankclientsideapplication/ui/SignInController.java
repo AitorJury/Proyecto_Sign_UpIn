@@ -91,7 +91,7 @@ public class SignInController {
             Scene scene = ((Node) event.getSource()).getScene();
             scene.setRoot(root);
         } catch (Exception e) {
-
+            LOGGER.warning(e.getMessage());
         }
     }
 
@@ -110,6 +110,7 @@ public class SignInController {
                 }//Si no confirma, la ventana permanecerá abierta.
             });
         } catch (Exception e) {
+            LOGGER.warning(e.getMessage());
             e.printStackTrace();
         }
 
@@ -140,11 +141,17 @@ public class SignInController {
             Scene scene = ((Node) event.getSource()).getScene();
             scene.setRoot(root);
         } catch (NotAuthorizedException e) {
+            LOGGER.warning(e.getMessage());
+            //Si no coincide, se lanzará una excepción con el label de error y 
+            //se mostrará un mensaje (“El correo o la contraseña no son correctos”)
             handleAlertError("The username or password does not match.");
         } catch (InternalServerErrorException e) {
-            //LOGGER.log
+            LOGGER.warning(e.getMessage());
+            //Si el servidor no responde se lanzará una excepción con el label de error 
+            //y se mostrará un mensaje.(“No se puede acceder al servidor”)
             handleAlertError("It cannot connect to the server.");
         } catch (Exception e) {
+            LOGGER.warning(e.getMessage());
             handleLabelError(e.getMessage());
         } finally {
             enableButtonSignIn();
@@ -168,9 +175,11 @@ public class SignInController {
             }
 
         } catch (Exception e) {
+            LOGGER.warning(e.getMessage());
             //lanzar excepcion de error
             handleLabelError(e.getMessage());
         } finally {
+            //Si el campo del texto está rellenado se habilita el botón de entrar
             enableButtonSignIn();
         }
 
@@ -184,8 +193,10 @@ public class SignInController {
             } else {
                 txtPassword.setStyle("-fx-border-color: white");
             }
+            //Si el campo del texto está rellenado se habilita el botón de entrar
             enableButtonSignIn();
         } catch (Exception e) {
+            LOGGER.warning(e.getMessage());
             //lanzar excepcion de error
             handleLabelError(e.getMessage());
         }
@@ -204,14 +215,14 @@ public class SignInController {
 
         }
     }
-
+    //Metodo para hablitar el boton
     private void enableButtonSignIn() {
         boolean validEmail = validEmail();
         boolean validPassword = validPassword();
         btnSignIn.setDisable(!(validEmail && validPassword));
 
     }
-
+    
     private boolean validEmail() {
         boolean isValidEmail = txtEmail.getText().isEmpty();
         return !isValidEmail;
