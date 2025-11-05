@@ -14,13 +14,13 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author cynthia
+ * @authors aitor & cynthia
+ * 
  */
 public class CRUDBankClientSideApplication extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/SignIn.fxml"));
         Parent root = (Parent)loader.load();
         

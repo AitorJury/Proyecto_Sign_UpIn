@@ -6,108 +6,111 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
+<Pane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="crudbankclientsideapplication.ui.SignUpController">
+    <children>
 
-         <ImageView fitHeight="134.0" fitWidth="170.0" layoutX="294.0" layoutY="52.0" preserveRatio="true">
+        <ImageView fitHeight="134.0" fitWidth="170.0" layoutX="294.0" layoutY="52.0" preserveRatio="true">
             <image>
-               <Image url="@icono_Cynthor_SF.png" />
+                <Image url="@icono_Cynthor_SF.png" />
             </image>
-         </ImageView>
+        </ImageView>
 
-         <Label layoutX="431.0" layoutY="110.0" style="-fx-text-fill: #333333;" text="Sign Up">
+        <Label layoutX="431.0" layoutY="110.0" style="-fx-text-fill: #333333;" text="Sign Up">
             <font>
-               <Font size="42.0" />
+                <Font size="42.0" />
             </font>
-         </Label>
+        </Label>
 
-         <Label layoutX="207.0" layoutY="203.0" text="First Name:" />
-         <TextField fx:id="txtFirstName" layoutX="346.0" layoutY="196.0" prefHeight="30.0" prefWidth="352.0" promptText="Enter your First Name" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
-         <Label layoutX="710.0" layoutY="200.0" text="❓">
+        <Label layoutX="207.0" layoutY="203.0" text="First Name:" />
+        <TextField fx:id="txtFirstName" layoutX="346.0" layoutY="196.0" prefHeight="30.0" prefWidth="352.0" promptText="Enter your First Name" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+        <Label layoutX="710.0" layoutY="200.0" text="❓">
             <tooltip>
-               <Tooltip text="Write your name exactly as it appears on your ID." />
+                <Tooltip text="Write your name exactly as it appears on your ID." />
             </tooltip>
-         </Label>
-         <Label fx:id="errFirstName" layoutX="740.0" layoutY="196.0" textFill="red" />
+        </Label>
+        <Label fx:id="errFirstName" layoutX="740.0" layoutY="196.0" textFill="red" />
 
-         <Label layoutX="207.0" layoutY="247.0" text="Last Name:" />
-         <TextField fx:id="txtLastName" layoutX="346.0" layoutY="240.0" prefHeight="30.0" prefWidth="352.0" promptText="Enter your Last Name" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
-         <Label layoutX="710.0" layoutY="244.0" text="❓">
+        <Label layoutX="207.0" layoutY="247.0" text="Last Name:" />
+        <TextField fx:id="txtLastName" layoutX="346.0" layoutY="240.0" prefHeight="30.0" prefWidth="352.0" promptText="Enter your Last Name" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+        <Label layoutX="710.0" layoutY="244.0" text="❓">
             <tooltip>
-               <Tooltip text="Enter your last name(s)" />
+                <Tooltip text="Enter your last name(s)" />
             </tooltip>
-         </Label>
-         <Label fx:id="errLastName" layoutX="740.0" layoutY="240.0" textFill="red" />
+        </Label>
+        <Label fx:id="errLastName" layoutX="740.0" layoutY="240.0" textFill="red" />
 
-         <Label layoutX="207.0" layoutY="291.0" text="Middle Initial:" />
-         <TextField fx:id="txtMiddleInitial" layoutX="346.0" layoutY="284.0" prefHeight="30.0" prefWidth="352.0" promptText="Enter your Middle Initial" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
-         <Label layoutX="710.0" layoutY="288.0" text="❓">
+        <Label layoutX="207.0" layoutY="291.0" text="Middle Initial:" />
+        <TextField fx:id="txtMiddleInitial" layoutX="346.0" layoutY="284.0" prefHeight="30.0" prefWidth="352.0" promptText="Enter your Middle Initial" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+        <Label layoutX="710.0" layoutY="288.0" text="❓">
             <tooltip>
-               <Tooltip text="Enter your middle initial" />
+                <Tooltip text="Enter your middle initial" />
             </tooltip>
-         </Label>
-         <Label fx:id="errMiddleInitial" layoutX="740.0" layoutY="284.0" textFill="red" />
+        </Label>
+        <Label fx:id="errMiddleInitial" layoutX="740.0" layoutY="284.0" textFill="red" />
 
-         <Label layoutX="207.0" layoutY="335.0" text="Email:" />
-         <TextField fx:id="txtEmail" layoutX="346.0" layoutY="328.0" prefHeight="30.0" prefWidth="352.0" promptText="user@example.com" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
-         <Label layoutX="710.0" layoutY="332.0" text="❓">
+        <Label layoutX="207.0" layoutY="335.0" text="Phone:" />
+        <TextField fx:id="txtPhone" layoutX="346.0" layoutY="328.0" prefHeight="30.0" prefWidth="352.0" promptText="Enter your phone number" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+        <Label layoutX="710.0" layoutY="335.0" text="❓">
             <tooltip>
-               <Tooltip text="Please use a valid email address. It will be used to verify your account." />
+                <Tooltip text="Enter your mobile phone number" />
             </tooltip>
-         </Label>
-         <Label fx:id="errEmail" layoutX="740.0" layoutY="328.0" textFill="red" />
+        </Label>
+        <Label fx:id="errPhone" layoutX="735.0" layoutY="328.0" textFill="red" />
 
-         <Label layoutX="207.0" layoutY="377.0" text="Password:" />
-         <PasswordField fx:id="txtPassword" layoutX="346.0" layoutY="370.0" prefHeight="30.0" prefWidth="352.0" promptText="Enter your password" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
-         <Label layoutX="710.0" layoutY="374.0" text="❓">
+        <Label layoutX="207.0" layoutY="377.0" text="City / State:" />
+        <TextField fx:id="txtCity" layoutX="346.0" layoutY="370.0" prefHeight="30.0" prefWidth="170.0" promptText="City" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+        <TextField fx:id="txtState" layoutX="530.0" layoutY="370.0" prefHeight="30.0" prefWidth="168.0" promptText="State" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+        <Label layoutX="710.0" layoutY="377.0" text="❓">
             <tooltip>
-               <Tooltip text="The password must be at least 8 characters long and not contain any special characters." />
+                <Tooltip text="Indicate the city and province where you reside" />
             </tooltip>
-         </Label>
-         <Label fx:id="errPassword" layoutX="740.0" layoutY="370.0" textFill="red" />
-   
-         <Label layoutX="207.0" layoutY="421.0" text="Repeat Password:" />
-         <PasswordField fx:id="txtRepeatPassword" layoutX="346.0" layoutY="414.0" prefHeight="30.0" prefWidth="352.0" promptText="Repeat your password" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
-         <Label layoutX="710.0" layoutY="418.0" text="❓">
+        </Label>
+        <Label fx:id="errCity" layoutX="735.0" layoutY="370.0" textFill="red" />
+        <Label fx:id="errState" layoutX="735.0" layoutY="370.0" textFill="red" />
+
+        <Label layoutX="207.0" layoutY="417.0" text="Street / ZIP:" />
+        <TextField fx:id="txtStreet" layoutX="346.0" layoutY="410.0" prefHeight="30.0" prefWidth="225.0" promptText="Street" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+        <TextField fx:id="txtZip" layoutX="584.0" layoutY="410.0" prefHeight="30.0" prefWidth="114.0" promptText="ZIP" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+        <Label layoutX="710.0" layoutY="417.0" text="❓">
             <tooltip>
-               <Tooltip text="Repeat exactly the same password as before" />
+                <Tooltip text="Enter your full address and postal code" />
             </tooltip>
-         </Label>
-         <Label fx:id="errRepeatPassword" layoutX="740.0" layoutY="414.0" textFill="red" />
-   
-         <Label layoutX="207.0" layoutY="464.0" text="Phone:" />
-         <TextField fx:id="txtPhone" layoutX="346.0" layoutY="457.0" prefHeight="30.0" prefWidth="352.0" promptText="Enter your phone number" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
-         <Label layoutX="710.0" layoutY="461.0" text="❓">
+        </Label>
+        <Label fx:id="errStreet" layoutX="735.0" layoutY="410.0" textFill="red" />
+        <Label fx:id="errZip" layoutX="735.0" layoutY="410.0" textFill="red" />
+
+        <Label layoutX="207.0" layoutY="458.0" text="Email:" />
+        <TextField fx:id="txtEmail" layoutX="346.0" layoutY="451.0" prefHeight="30.0" prefWidth="352.0" promptText="user@example.com" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+        <Label layoutX="710.0" layoutY="455.0" text="❓">
             <tooltip>
-               <Tooltip text="Enter your mobile phone number" />
+                <Tooltip text="Please use a valid email address. It will be used to verify your account." />
             </tooltip>
-         </Label>
-         <Label fx:id="errPhone" layoutX="740.0" layoutY="457.0" textFill="red" />
-   
-         <Label layoutX="207.0" layoutY="506.0" text="City / State:" />
-         <TextField fx:id="txtCity" layoutX="346.0" layoutY="499.0" prefHeight="30.0" prefWidth="170.0" promptText="City" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
-         <TextField fx:id="txtState" layoutX="530.0" layoutY="499.0" prefHeight="30.0" prefWidth="168.0" promptText="State" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
-         <Label layoutX="710.0" layoutY="503.0" text="❓">
+        </Label>
+        <Label fx:id="errEmail" layoutX="740.0" layoutY="451.0" textFill="red" />
+
+        <Label layoutX="207.0" layoutY="500.0" text="Password:" />
+        <PasswordField fx:id="txtPassword" layoutX="346.0" layoutY="493.0" prefHeight="30.0" prefWidth="352.0" promptText="Enter your password" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+        <Label layoutX="710.0" layoutY="497.0" text="❓">
             <tooltip>
-               <Tooltip text="Indicate the city and province where you reside" />
+                <Tooltip text="The password must be at least 8 characters long and not contain any special characters." />
             </tooltip>
-         </Label>
-         <Label fx:id="errCityState" layoutX="740.0" layoutY="499.0" textFill="red" />
-   
-         <Label layoutX="207.0" layoutY="546.0" text="Street / ZIP:" />
-         <TextField fx:id="txtStreet" layoutX="346.0" layoutY="539.0" prefHeight="30.0" prefWidth="225.0" promptText="Street" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
-         <TextField fx:id="txtZip" layoutX="584.0" layoutY="539.0" prefHeight="30.0" prefWidth="114.0" promptText="ZIP" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
-         <Label layoutX="710.0" layoutY="543.0" text="❓">
+        </Label>
+        <Label fx:id="errPassword" layoutX="740.0" layoutY="493.0" textFill="red" />
+
+        <Label layoutX="207.0" layoutY="544.0" text="Repeat Password:" />
+        <PasswordField fx:id="txtRepeatPassword" layoutX="346.0" layoutY="537.0" prefHeight="30.0" prefWidth="352.0" promptText="Repeat your password" style="-fx-background-radius: 5; -fx-border-radius: 5;" />
+        <Label layoutX="710.0" layoutY="541.0" text="❓">
             <tooltip>
-               <Tooltip text="Enter your full address and postal code" />
+                <Tooltip text="Repeat exactly the same password as before" />
             </tooltip>
-         </Label>
-         <Label fx:id="errStreetZip" layoutX="740.0" layoutY="539.0" textFill="red" />
-   
-         <Button fx:id="btnExit" layoutX="363.0" layoutY="590.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="84.0" style="-fx-background-color: #cccccc; -fx-background-radius: 5; -fx-text-fill: #000000;" text="Exit" />
-         <Button fx:id="btnCreateAccount" layoutX="461.0" layoutY="590.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="220.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5;" text="Create Account" />
-   
-         <Label layoutX="402.0" layoutY="636.0" text="Already have an account?" />
-         <Hyperlink fx:id="linkSignIn" layoutX="575.0" layoutY="632.0" style="-fx-font-size: 13px;" text="Sign In" />
-   </children>
+        </Label>
+        <Label fx:id="errRepeatPassword" layoutX="740.0" layoutY="537.0" textFill="red" />
+
+        <Button fx:id="btnExit" layoutX="363.0" layoutY="590.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="84.0" style="-fx-background-color: #cccccc; -fx-background-radius: 5; -fx-text-fill: #000000;" text="Exit" />
+        <Button fx:id="btnCreateAccount" layoutX="461.0" layoutY="590.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="220.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 5;" text="Create Account" />
+
+        <Label layoutX="402.0" layoutY="636.0" text="Already have an account?" />
+        <Hyperlink fx:id="linkSignIn" layoutX="575.0" layoutY="632.0" style="-fx-font-size: 13px;" text="Sign In" />
+
+    </children>
 </Pane>
