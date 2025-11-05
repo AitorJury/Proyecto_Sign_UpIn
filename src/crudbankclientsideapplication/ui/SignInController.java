@@ -5,7 +5,7 @@
  */
 package crudbankclientsideapplication.ui;
 
-import crudbankclientapplication.logic.CustomerRESTClient;
+import crudbankclientsideapplication.logic.CustomerRESTClient;
 import crudbankclientsideapplication.model.Customer;
 
 import java.util.logging.Logger;
