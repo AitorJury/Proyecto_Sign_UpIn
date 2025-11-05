@@ -5,10 +5,19 @@
  */
 package crudbankclientsideapplication.ui;
 
+import java.util.logging.Logger;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+
 /**
  *
  * @author aitor & cynthia
  */
 public class MainController {
+    private static final Logger LOGGER = Logger.getLogger("crudbankclientside.ui");
+    @FXML
+    private Button btnLogout;
+    
+    
     
 }

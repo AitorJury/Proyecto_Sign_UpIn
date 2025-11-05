@@ -48,9 +48,9 @@ public class SignInControllerTest extends ApplicationTest {
     public void test3_ButtonEnable(){
         clickOn("#txtEmail");
         write("awallace@gmail.com");
-        clickOn("txtPassword");
+        clickOn("#txtPassword");
         write("qwerty*9876");
-        clickOn("SignIn");
+        clickOn("#btnSignIn");
         verifyThat("#btnLogout", isVisible());
     } 
     
