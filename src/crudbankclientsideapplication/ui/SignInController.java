@@ -63,7 +63,7 @@ public class SignInController {
         txtEmail.focusedProperty().addListener(this::handeltxtEmailFocusChange);
         txtEmail.textProperty().addListener(this::handeltxtEmailTextChange);
         txtPassword.textProperty().addListener(this::handeltxtPasswordTextChange);
-
+        
         stage.show();
         btnSignIn.setDisable(true);
 
@@ -199,6 +199,9 @@ public class SignInController {
             LOGGER.warning(e.getMessage());
             //lanzar excepcion de error
             handleLabelError(e.getMessage());
+        } finally {
+            //Si el campo del texto está rellenado se habilita el botón de entrar
+            enableButtonSignIn();
         }
     }
 
