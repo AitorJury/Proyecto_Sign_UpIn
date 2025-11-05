@@ -44,6 +44,5 @@
 
         <Label layoutX="405.0" layoutY="410.0" text="Don't have an account?" />
         <Hyperlink fx:id="linkSignUp" layoutX="575.0" layoutY="406.0" style="-fx-font-size: 13px;" text="Sign Up" />
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" />
     </children>
 </Pane>
