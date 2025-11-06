@@ -3,6 +3,7 @@ package crudbankclientsideapplication.ui;
 // Imports.
 import crudbankclientsideapplication.model.Customer;
 import crudbankclientsideapplication.logic.CustomerRESTClient;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -39,12 +40,6 @@ public class SignUpController {
     @FXML
     private TextField txtMiddleInitial;
     @FXML
-    private TextField txtEmail;
-    @FXML
-    private PasswordField txtPassword;
-    @FXML
-    private PasswordField txtRepeatPassword;
-    @FXML
     private TextField txtPhone;
     @FXML
     private TextField txtCity;
@@ -54,6 +49,12 @@ public class SignUpController {
     private TextField txtStreet;
     @FXML
     private TextField txtZip;
+    @FXML
+    private TextField txtEmail;
+    @FXML
+    private PasswordField txtPassword;
+    @FXML
+    private PasswordField txtRepeatPassword;
 
     // Labels.
     @FXML
@@ -62,12 +63,6 @@ public class SignUpController {
     private Label errLastName;
     @FXML
     private Label errMiddleInitial;
-    @FXML
-    private Label errEmail;
-    @FXML
-    private Label errPassword;
-    @FXML
-    private Label errRepeatPassword;
     @FXML
     private Label errPhone;
     @FXML
@@ -78,6 +73,12 @@ public class SignUpController {
     private Label errStreet;
     @FXML
     private Label errZip;
+    @FXML
+    private Label errEmail;
+    @FXML
+    private Label errPassword;
+    @FXML
+    private Label errRepeatPassword;
         
     // Botones y Links.
     @FXML
@@ -96,8 +97,9 @@ public class SignUpController {
     // Lista de todos los Labels.
     private List<Label> errLabels;
 
-    // Agrupa campos y labels para manejo centralizado.
-    @FXML
+    /**
+     * Agrupa campos y labels para manejo centralizado.
+     */
     private void initialize() {
         txtFields = Arrays.asList(
             txtFirstName, txtLastName, txtMiddleInitial, txtEmail,
@@ -602,7 +604,7 @@ public class SignUpController {
                 throw new Exception("Password must not be empty");
             }
             // Si tiene símbolos inválidos, lanzar excepción.
-            if (!newValue.matches("[a-zA-Z0-9.*!@#$%&\\-_]")) {
+            if (!newValue.matches("[a-zA-Z0-9.*!@#$%&\\-_]+")) {
                 throw new Exception("Password contains invalid characters");
             }
             // Si tiene menos de 8 caracteres, lanzar excepción.
@@ -673,24 +675,31 @@ public class SignUpController {
         try {
             LOGGER.info("Clicked hyperlink");
             // Cargar FXML de Sign In y obtener la ventana.
+            URL res = getClass().getResource("/crudbankclientsideapplication/ui/SignIn.fxml");
+            LOGGER.info("SignIn.fxml resource: " + res);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/crudbankclientsideapplication/ui/SignIn.fxml"));
-            Parent root = loader.load();
+            Parent root = (Parent) loader.load();
             Stage stage = (Stage) linkSignIn.getScene().getWindow();
+            SignInController controller = loader.getController();
 
             // Cambiar la escena y conectar con Sign In.
-            stage.setScene(new Scene(root));
-            stage.setTitle("Sign In");
+            controller.initStage(stage, root);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
             stage.show();
             LOGGER.info("Correct connection with Sign In");
-
+            
         } catch (Exception e) {
             // Si no logra conectar con la ventana u otro error, mostrar un 
             // alert modal que indique que no se puede conectar con la ventana 
             // pedida. Debe aceptar el mensaje con un OK.
             LOGGER.warning("Error connection with Sign In");
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Could not open Sign In window.")
+            ButtonType acept = new ButtonType("OK");
+            new Alert(Alert.AlertType.ERROR, "Could not open Sign In window.", 
+                    acept)
                     .showAndWait();
         }
     }
@@ -704,12 +713,14 @@ public class SignUpController {
         try {
             LOGGER.info("Clicked exit button");
             // Mostrar alert modal de confirmación para salir de la aplicación.
+            ButtonType yes = new ButtonType("Yes");
+            ButtonType no = new ButtonType("No");
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                    "Do you really want to exit?");
+                    "Do you really want to exit?", yes, no);
             alert.showAndWait().ifPresent(resp -> {
                 // Si confirma, cerrar la aplicación.
                 // Si cancela, mantener la ventana abierta.
-                if (resp == ButtonType.OK) {
+                if (resp == yes) {
                     LOGGER.info("Leaving Sign Up");
                     Stage stage = (Stage) btnExit.getScene().getWindow();
                     stage.close();
@@ -720,7 +731,9 @@ public class SignUpController {
             // indique que no se puede salir. Debe aceptar el mensaje con un OK.
             LOGGER.warning("Error leaving Sign Up");
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Could not exit Sign Up window.")
+            ButtonType acept = new ButtonType("OK");
+            new Alert(Alert.AlertType.ERROR, "Could not exit Sign Up window.", 
+                    acept)
                     .showAndWait();
         }
     }
@@ -757,8 +770,9 @@ public class SignUpController {
             // se ha generado correctamente el usuario. Debe aceptar el mensaje
             // con un OK.
             LOGGER.info("Correct user creation");
+            ButtonType acept = new ButtonType("OK");
             new Alert(Alert.AlertType.INFORMATION, "Customer created and logged"
-                    + " in successfully!")
+                    + " in successfully!", acept)
                     .showAndWait();
             
             // Conectar con Sign In para iniciar sesión.
@@ -778,24 +792,27 @@ public class SignUpController {
             // con un OK. Se devuelve al Sign Up.
             LOGGER.warning("Error user creation: Email exists");
             e.printStackTrace();
+            ButtonType acept = new ButtonType("OK");
             new Alert(Alert.AlertType.ERROR,
-                    "The email exists. Please try another.").showAndWait();
+                    "The email exists. Please try another.", acept).showAndWait();
         } catch (InternalServerErrorException e) {
             // Excepción generada por el servidor por falta de conexión con esta. 
             // Mostrar un alert modal que indique el error. Debe aceptar el 
             // mensaje con un OK. Se devuelve al Sign Up.
             LOGGER.warning("Error user creation: Server error");
             e.printStackTrace();
+            ButtonType acept = new ButtonType("OK");
             new Alert(Alert.AlertType.ERROR,
-                    "Server error. Please try again later.").showAndWait();
+                    "Server error. Please try again later.", acept).showAndWait();
         } catch (Exception e) {
             // Excepción generada por cualquier otro error. Mostrar un alert 
             // modal que indique el error. Debe aceptar el mensaje con un OK. Se
             // devuelve al Sign Up.
             LOGGER.warning("Error user creation: Unknown error");
             e.printStackTrace();
+            ButtonType acept = new ButtonType("OK");
             new Alert(Alert.AlertType.ERROR,
-                    "Unexpected error: " + e.getMessage()).showAndWait();
+                    "Unexpected error: " + e.getMessage(), acept).showAndWait();
         } finally {
             // Cerrar cliente correctamente.
             client.close();
@@ -848,15 +865,6 @@ public class SignUpController {
         if (!txtMiddleInitial.getText().matches("[a-zA-Z]{1}")) {
             allValid = false;
         }
-        if (!txtEmail.getText().matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
-            allValid = false;
-        }
-        if (!txtPassword.getText().matches("[a-zA-Z0-9.*!@#$%&\\-_]{8,}")) {
-            allValid = false;
-        }
-        if (!txtRepeatPassword.getText().equals(txtPassword.getText())) {
-            allValid = false;
-        }
         if (!txtPhone.getText().matches("\\d{7,11}")) {
             allValid = false;
         }
@@ -870,6 +878,15 @@ public class SignUpController {
             allValid = false;
         }
         if (!txtZip.getText().matches("\\d{5}")) {
+            allValid = false;
+        }
+        if (!txtEmail.getText().matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            allValid = false;
+        }
+        if (!txtPassword.getText().matches("[a-zA-Z0-9.*!@#$%&\\-_]{8,}")) {
+            allValid = false;
+        }
+        if (!txtRepeatPassword.getText().equals(txtPassword.getText())) {
             allValid = false;
         }
 
