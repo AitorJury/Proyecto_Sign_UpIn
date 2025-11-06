@@ -63,7 +63,8 @@ public class SignInController {
         txtEmail.focusedProperty().addListener(this::handeltxtEmailFocusChange);
         txtEmail.textProperty().addListener(this::handeltxtEmailTextChange);
         txtPassword.textProperty().addListener(this::handeltxtPasswordTextChange);
-        
+        txtPassword.focusedProperty().addListener(this::handletxtPasswordFocusChange);
+
         stage.show();
         btnSignIn.setDisable(true);
 
@@ -77,8 +78,12 @@ public class SignInController {
     }
 
     private void handleAlertError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, message);
+        ButtonType okay = new ButtonType("Okay");
+        Alert alert = new Alert(Alert.AlertType.ERROR, "", okay);
+        alert.setTitle("Error");
+        alert.setContentText(message);
         alert.showAndWait();
+
     }
 
     //
@@ -98,13 +103,15 @@ public class SignInController {
     private void handleBtnExitOnAction(ActionEvent event) {
         //boton exit
         try {
+            ButtonType yes = new ButtonType("Yes");
+            ButtonType no = new ButtonType("No");
             // Mostrar alert modal de confirmación para salir de la aplicación
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to exit?");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to exit?", yes, no);
             alert.setTitle("Exit the application");
             alert.setHeaderText("Departure confirmation");
             alert.showAndWait().ifPresent(resp -> {
                 // Si confirma, cerrar la aplicación
-                if (resp == ButtonType.OK) {
+                if (resp == yes) {
                     Stage stage = (Stage) btnExit.getScene().getWindow();
                     stage.close();
                 }//Si no confirma, la ventana permanecerá abierta.
@@ -124,7 +131,6 @@ public class SignInController {
                 //Si no coincide, se lanzará una excepción con el label de error y se mostrará un mensaje (“El correo o la contraseña no son correctos”)
                 throw new Exception("The email must have @ an email and a domain");
 
-                //200 bien
             } else {
                 handleLabelError("Checking in the database");
             }
@@ -171,6 +177,7 @@ public class SignInController {
                 throw new Exception("The email field must not be left empty.");
             } else {
                 txtEmail.setStyle("-fx-border-color: white");
+                lblError.setText("");
 
             }
 
@@ -192,6 +199,7 @@ public class SignInController {
                 throw new Exception("The password field must not be left empty.");
             } else {
                 txtPassword.setStyle("-fx-border-color: white");
+                lblError.setText("");
             }
             //Si el campo del texto está rellenado se habilita el botón de entrar
             enableButtonSignIn();
@@ -212,12 +220,17 @@ public class SignInController {
      * @param newValue
      */
     private void handeltxtEmailFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
-        if (!oldValue) {
-            //oldValue false newValue true
-        } else {
+        if (oldValue && !newValue && !txtEmail.getText().isEmpty()) {
+            lblError.setText(""); 
+        }
+    }
+
+    private void handletxtPasswordFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
+        if (oldValue && !newValue) {
 
         }
     }
+
     //Metodo para hablitar el boton
     private void enableButtonSignIn() {
         boolean validEmail = validEmail();
@@ -225,7 +238,7 @@ public class SignInController {
         btnSignIn.setDisable(!(validEmail && validPassword));
 
     }
-    
+
     private boolean validEmail() {
         boolean isValidEmail = txtEmail.getText().isEmpty();
         return !isValidEmail;

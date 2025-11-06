@@ -7,6 +7,7 @@ package crudbankclientsideapplication.ui;
 
 import crudbankclientsideapplication.CRUDBankClientSideApplication;
 import javafx.stage.Stage;
+import javax.ws.rs.NotAuthorizedException;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.FixMethodOrder;
@@ -44,8 +45,47 @@ public class SignInControllerTest extends ApplicationTest {
         verifyThat("#txtEmail", isFocused());
         
     } 
+    
     @Test
-    public void test3_ButtonEnable(){
+    public void tes3_ButtonEnable(){
+        clickOn("#txtEmail");
+        write("hello");
+        verifyThat("#btnSignIn", isDisabled());
+        clickOn("#txtEmail");
+        eraseText(5);
+        clickOn("#txtPassword");
+        write("hello");
+        verifyThat("#btnSignIn", isDisabled());
+        clickOn("#txtEmail");
+        write("hello");
+        verifyThat("#btnSignIn", isEnabled());
+    }
+    @Test
+    public void test4_NotAuthorizedExceptionTest(){
+        clickOn("#txtEmail");
+        write("awallace@gmail.com");
+        clickOn("#txtPassword");
+        write("qwerty");
+        clickOn("#btnSignIn");
+        
+        verifyThat( "Okay", isVisible());
+         clickOn("Okay");
+    }
+    
+    @Test
+    public void test5_LinkSignIn(){
+        clickOn("#linkSignUp");
+        verifyThat("#btnCreateAccount", isVisible());
+    }
+    @Test 
+    public void test6_ExitButton(){
+        clickOn("#btnExit");
+        verifyThat("Yes", isVisible());
+        clickOn("Yes");
+    }
+    
+    @Test
+    public void test7_SignIn(){
         clickOn("#txtEmail");
         write("awallace@gmail.com");
         clickOn("#txtPassword");
