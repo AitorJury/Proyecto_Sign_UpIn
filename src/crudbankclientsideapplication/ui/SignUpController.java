@@ -594,7 +594,7 @@ public class SignUpController {
                 throw new Exception("Password must not be empty");
             }
             // Si tiene símbolos inválidos, lanzar excepción.
-            if (!newValue.matches("[a-zA-Z0-9.*!@#$%&\\-_]")) {
+            if (!newValue.matches("[a-zA-Z0-9.*!@#$%&\\-_]+")) {
                 throw new Exception("Password contains invalid characters");
             }
             // Si tiene menos de 8 caracteres, lanzar excepción.
@@ -678,7 +678,8 @@ public class SignUpController {
             // pedida. Debe aceptar el mensaje con un OK.
             LOGGER.warning("Error connection with Sign In");
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Could not open Sign In window.")
+            ButtonType ok = new ButtonType("OK");
+            new Alert(Alert.AlertType.ERROR, "Could not open Sign In window.", ok)
                     .showAndWait();
         }
     }
@@ -692,8 +693,10 @@ public class SignUpController {
         try {
             LOGGER.info("Clicked exit button");
             // Mostrar alert modal de confirmación para salir de la aplicación.
+            ButtonType yes = new ButtonType("YES");
+            ButtonType no = new ButtonType("NO");
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                    "Do you really want to exit?");
+                    "Do you really want to exit?", yes, no);
             alert.showAndWait().ifPresent(resp -> {
                 // Si confirma, cerrar la aplicación.
                 // Si cancela, mantener la ventana abierta.
@@ -708,7 +711,8 @@ public class SignUpController {
             // indique que no se puede salir. Debe aceptar el mensaje con un OK.
             LOGGER.warning("Error leaving Sign Up");
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Could not exit Sign Up window.")
+            ButtonType ok = new ButtonType("OK");
+            new Alert(Alert.AlertType.ERROR, "Could not exit Sign Up window.", ok)
                     .showAndWait();
         }
     }
@@ -745,8 +749,9 @@ public class SignUpController {
             // se ha generado correctamente el usuario. Debe aceptar el mensaje
             // con un OK.
             LOGGER.info("Correct user creation");
+            ButtonType ok = new ButtonType("OK");
             new Alert(Alert.AlertType.INFORMATION, "Customer created and logged"
-                    + " in successfully!")
+                    + " in successfully!", ok)
                     .showAndWait();
 
             // Conectar con Sign In para iniciar sesión.
@@ -766,24 +771,27 @@ public class SignUpController {
             // con un OK. Se devuelve al Sign Up.
             LOGGER.warning("Error user creation: Email exists");
             e.printStackTrace();
+            ButtonType ok = new ButtonType("OK");
             new Alert(Alert.AlertType.ERROR,
-                    "The email exists. Please try another.").showAndWait();
+                    "The email exists. Please try another.", ok).showAndWait();
         } catch (InternalServerErrorException e) {
             // Excepción generada por el servidor por falta de conexión con esta. 
             // Mostrar un alert modal que indique el error. Debe aceptar el 
             // mensaje con un OK. Se devuelve al Sign Up.
             LOGGER.warning("Error user creation: Server error");
             e.printStackTrace();
+            ButtonType ok = new ButtonType("OK");
             new Alert(Alert.AlertType.ERROR,
-                    "Server error. Please try again later.").showAndWait();
+                    "Server error. Please try again later.", ok).showAndWait();
         } catch (Exception e) {
             // Excepción generada por cualquier otro error. Mostrar un alert 
             // modal que indique el error. Debe aceptar el mensaje con un OK. Se
             // devuelve al Sign Up.
             LOGGER.warning("Error user creation: Unknown error");
             e.printStackTrace();
+            ButtonType ok = new ButtonType("OK");
             new Alert(Alert.AlertType.ERROR,
-                    "Unexpected error: " + e.getMessage()).showAndWait();
+                    "Unexpected error: " + e.getMessage(), ok).showAndWait();
         } finally {
             // Cerrar cliente correctamente.
             client.close();
