@@ -5,7 +5,7 @@
  */
 package crudbankclientsideapplication;
 
-import crudbankclientsideapplication.ui.SignUpController;
+import crudbankclientsideapplication.ui.SignInController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,16 +21,12 @@ public class CRUDBankClientSideApplication extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/SignUp.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/SignIn.fxml"));
         Parent root = (Parent)loader.load();
         
-         SignUpController controller = loader.getController();
-         controller.init(stage, root);
+         SignInController controller = loader.getController();
+         controller.initStage(stage, root);
         
-                
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
     }
 
     /**

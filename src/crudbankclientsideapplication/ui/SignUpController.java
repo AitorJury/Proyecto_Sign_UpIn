@@ -3,7 +3,6 @@ package crudbankclientsideapplication.ui;
 // Imports.
 import crudbankclientsideapplication.model.Customer;
 import crudbankclientsideapplication.logic.CustomerRESTClient;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -32,6 +31,7 @@ import javax.ws.rs.InternalServerErrorException;
  * @author Aitor Jury Rodríguez.
  */
 public class SignUpController {
+
     // TextFields.
     @FXML
     private TextField txtFirstName;
@@ -39,6 +39,12 @@ public class SignUpController {
     private TextField txtLastName;
     @FXML
     private TextField txtMiddleInitial;
+    @FXML
+    private TextField txtEmail;
+    @FXML
+    private PasswordField txtPassword;
+    @FXML
+    private PasswordField txtRepeatPassword;
     @FXML
     private TextField txtPhone;
     @FXML
@@ -49,12 +55,6 @@ public class SignUpController {
     private TextField txtStreet;
     @FXML
     private TextField txtZip;
-    @FXML
-    private TextField txtEmail;
-    @FXML
-    private PasswordField txtPassword;
-    @FXML
-    private PasswordField txtRepeatPassword;
 
     // Labels.
     @FXML
@@ -63,6 +63,12 @@ public class SignUpController {
     private Label errLastName;
     @FXML
     private Label errMiddleInitial;
+    @FXML
+    private Label errEmail;
+    @FXML
+    private Label errPassword;
+    @FXML
+    private Label errRepeatPassword;
     @FXML
     private Label errPhone;
     @FXML
@@ -73,13 +79,7 @@ public class SignUpController {
     private Label errStreet;
     @FXML
     private Label errZip;
-    @FXML
-    private Label errEmail;
-    @FXML
-    private Label errPassword;
-    @FXML
-    private Label errRepeatPassword;
-        
+
     // Botones y Links.
     @FXML
     private Button btnExit;
@@ -87,103 +87,95 @@ public class SignUpController {
     private Button btnCreateAccount;
     @FXML
     private Hyperlink linkSignIn;
+    private Stage stage;
 
     // Logger para consola.
-    private static final Logger LOGGER = 
-            Logger.getLogger("crudbankclientsideapplication.ui");
-    
+    private static final Logger LOGGER
+            = Logger.getLogger("crudbankclientsideapplication.ui");
+
     // Lista de todos los TextFields y PasswordFields.
     private List<javafx.scene.control.TextInputControl> txtFields;
     // Lista de todos los Labels.
     private List<Label> errLabels;
 
-    /**
-     * Agrupa campos y labels para manejo centralizado.
-     */
+    // Agrupa campos y labels para manejo centralizado.
+    @FXML
     private void initialize() {
         txtFields = Arrays.asList(
-            txtFirstName, txtLastName, txtMiddleInitial, txtEmail,
-            txtPassword, txtRepeatPassword, txtPhone, txtCity,
-            txtState, txtStreet, txtZip);
+                txtFirstName, txtLastName, txtMiddleInitial, txtEmail,
+                txtPassword, txtRepeatPassword, txtPhone, txtCity,
+                txtState, txtStreet, txtZip);
 
         errLabels = Arrays.asList(
-            errFirstName, errLastName, errMiddleInitial, errEmail,
-            errPassword, errRepeatPassword, errPhone,
-            errCity, errState, errStreet, errZip);
+                errFirstName, errLastName, errMiddleInitial, errEmail,
+                errPassword, errRepeatPassword, errPhone,
+                errCity, errState, errStreet, errZip);
     }
-    
+
     /**
      * Inicializa la ventana Sign Up y configura los controles.
-     * 
+     *
      * @param stage La ventana principal (Stage) donde se muestra la escena.
-     * @param root  La raíz (Parent) que contiene los elementos del FXML.
+     * @param root La raíz (Parent) que contiene los elementos del FXML.
      */
     public void init(Stage stage, Parent root) {
         try {
-        LOGGER.info("Initializing window.");
-        stage.setTitle("Sign Up");
-        stage.setResizable(false);
-        
-        // Todos los labels de error se vacían.
-        for (Label err : errLabels) {
-            err.setText("");
-        }
-        
-        /*
+            this.stage = stage;
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            LOGGER.info("Initializing window.");
+            stage.setTitle("Sign Up");
+            stage.setResizable(false);
+            stage.show();
+
+            // Todos los labels de error se vacían.
+            for (Label err : errLabels) {
+                err.setText("");
+            }
+
+            /*
         Los campos de texto y password estarán habilitados para la entrada
         de datos (por defecto).
         La ventana es no modal (por defecto).
-        */
-        
-        // El botón btnExit estará habilitado.
-        btnExit.setDisable(false);
-        // El botón btnCreateAccount estará deshabilitado hasta que se
-        // introduzcan todos los campos de texto.
-        btnCreateAccount.setDisable(true);
-        // El foco se coloca en txtFirstName.
-        txtFirstName.requestFocus();
+             */
+            // El botón btnExit estará habilitado.
+            btnExit.setDisable(false);
+            // El botón btnCreateAccount estará deshabilitado hasta que se
+            // introduzcan todos los campos de texto.
+            btnCreateAccount.setDisable(true);
+            // El foco se coloca en txtFirstName.
+            txtFirstName.requestFocus();
 
-        // Asociar eventos de campos de texto a manejadores.
-        txtFirstName.focusedProperty().addListener(this::
-                handleTxtFirstNameFocusChange);
-        txtLastName.focusedProperty().addListener(this::
-                handleTxtLastNameFocusChange);
-        txtMiddleInitial.focusedProperty().addListener(this::
-                handleTxtMiddleInitialFocusChange);
-        txtPhone.focusedProperty().addListener(this::
-                handleTxtPhoneFocusChange);
-        txtCity.focusedProperty().addListener(this::
-                handleTxtCityFocusChange);
-        txtState.focusedProperty().addListener(this::
-                handleTxtStateFocusChange);
-        txtStreet.focusedProperty().addListener(this::
-                handleTxtStreetFocusChange);
-        txtZip.focusedProperty().addListener(this::
-                handleTxtZipFocusChange);
-        txtEmail.focusedProperty().addListener(this::
-                handleTxtEmailFocusChange);
-        txtPassword.textProperty().addListener(this::
-                handleTxtPasswordTextChange);
-        txtRepeatPassword.textProperty().addListener(this::
-                handleTxtRepeatPasswordTextChange);
-        // Asociar eventos de botones y links a manejadores.
-        btnExit.setOnAction(this::handleBtnExitOnAction);
-        btnCreateAccount.setOnAction(this::handleBtnCreateAccountOnAction);
-        linkSignIn.setOnAction(this::handleLinkSignInAction);
+            // Asociar eventos de campos de texto a manejadores.
+            txtFirstName.focusedProperty().addListener(this::handleTxtFirstNameFocusChange);
+            txtLastName.focusedProperty().addListener(this::handleTxtLastNameFocusChange);
+            txtMiddleInitial.focusedProperty().addListener(this::handleTxtMiddleInitialFocusChange);
+            txtPhone.focusedProperty().addListener(this::handleTxtPhoneFocusChange);
+            txtCity.focusedProperty().addListener(this::handleTxtCityFocusChange);
+            txtState.focusedProperty().addListener(this::handleTxtStateFocusChange);
+            txtStreet.focusedProperty().addListener(this::handleTxtStreetFocusChange);
+            txtZip.focusedProperty().addListener(this::handleTxtZipFocusChange);
+            txtEmail.focusedProperty().addListener(this::handleTxtEmailFocusChange);
+            txtPassword.textProperty().addListener(this::handleTxtPasswordTextChange);
+            txtRepeatPassword.textProperty().addListener(this::handleTxtRepeatPasswordTextChange);
+            // Asociar eventos de botones y links a manejadores.
+            btnExit.setOnAction(this::handleBtnExitOnAction);
+            btnCreateAccount.setOnAction(this::handleBtnCreateAccountOnAction);
+            linkSignIn.setOnAction(this::handleLinkSignInAction);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     /**
-    * Manejador del evento de cambio de foco en el campo FirstName. Valida el
-    * campo al perder el foco. Máximo 20 caracteres.
-    * 
-    * @param observable El valor observable que cambia.
-    * @param oldValue El valor anterior del foco.
-    * @param newValue El nuevo valor del foco.
-    */
-    private void handleTxtFirstNameFocusChange(ObservableValue observable, 
+     * Manejador del evento de cambio de foco en el campo FirstName. Valida el
+     * campo al perder el foco. Máximo 20 caracteres.
+     *
+     * @param observable El valor observable que cambia.
+     * @param oldValue El valor anterior del foco.
+     * @param newValue El nuevo valor del foco.
+     */
+    private void handleTxtFirstNameFocusChange(ObservableValue observable,
             Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             try {
@@ -228,7 +220,7 @@ public class SignUpController {
      * @param oldValue El valor anterior del foco.
      * @param newValue El nuevo valor del foco.
      */
-    private void handleTxtLastNameFocusChange(ObservableValue observable, 
+    private void handleTxtLastNameFocusChange(ObservableValue observable,
             Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             try {
@@ -264,16 +256,16 @@ public class SignUpController {
             }
         }
     }
-    
+
     /**
      * Manejador del evento de cambio de foco en el campo MiddleInitial. Valida
      * que sea una sola letra al perder el foco.
-     * 
+     *
      * @param observable El valor observable que cambia.
      * @param oldValue El valor anterior del foco.
      * @param newValue El nuevo valor del foco.
      */
-    private void handleTxtMiddleInitialFocusChange(ObservableValue observable, 
+    private void handleTxtMiddleInitialFocusChange(ObservableValue observable,
             Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             try {
@@ -309,7 +301,7 @@ public class SignUpController {
             }
         }
     }
-    
+
     /**
      * Manejador del evento de cambio de foco en el campo Phone. Valida que no
      * esté vacío, que contenga solo números y tenga entre 7 y 11 dígitos al
@@ -319,7 +311,7 @@ public class SignUpController {
      * @param oldValue El valor anterior del foco.
      * @param newValue El nuevo valor del foco.
      */
-    private void handleTxtPhoneFocusChange(ObservableValue observable, 
+    private void handleTxtPhoneFocusChange(ObservableValue observable,
             Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             try {
@@ -335,7 +327,7 @@ public class SignUpController {
                 // Si no tiene entre 7 y 11 dígitos, recortar y lanzar excepción.
                 if (text.length() < 7 || text.length() > 11) {
                     if (text.length() > 11) {
-                        txtPhone.setText(text.substring(0,11));
+                        txtPhone.setText(text.substring(0, 11));
                     }
                     throw new Exception("Phone length must be 7-11 digits");
                 }
@@ -357,7 +349,7 @@ public class SignUpController {
             }
         }
     }
-    
+
     /**
      * Manejador del evento de cambio de foco en el campo City. Valida que no
      * esté vacío, que contenga solo letras y espacios, y que no supere 20
@@ -367,7 +359,7 @@ public class SignUpController {
      * @param oldValue El valor anterior del foco.
      * @param newValue El nuevo valor del foco.
      */
-    private void handleTxtCityFocusChange(ObservableValue observable, 
+    private void handleTxtCityFocusChange(ObservableValue observable,
             Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             try {
@@ -403,7 +395,7 @@ public class SignUpController {
             }
         }
     }
-    
+
     /**
      * Manejador del evento de cambio de foco en el campo State. Valida que no
      * esté vacío, que contenga solo letras y espacios, y que no supere 20
@@ -413,7 +405,7 @@ public class SignUpController {
      * @param oldValue El valor anterior del foco.
      * @param newValue El nuevo valor del foco.
      */
-    private void handleTxtStateFocusChange(ObservableValue observable, 
+    private void handleTxtStateFocusChange(ObservableValue observable,
             Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             try {
@@ -450,13 +442,12 @@ public class SignUpController {
         }
     }
 
-    
     /**
      * Manejador del evento de cambio de foco en el campo Street. Valida que no
      * esté vacío, que tenga letras, números o símbolos válidos, y que no supere
      * 50 caracteres al perder el foco.
      */
-    private void handleTxtStreetFocusChange(ObservableValue observable, 
+    private void handleTxtStreetFocusChange(ObservableValue observable,
             Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             try {
@@ -492,7 +483,7 @@ public class SignUpController {
             }
         }
     }
-    
+
     /**
      * Manejador del evento de cambio de foco en el campo Zip. Valida que no
      * esté vacío, que contenga solo números y que tenga exactamente 5 dígitos
@@ -502,7 +493,7 @@ public class SignUpController {
      * @param oldValue El valor anterior del foco.
      * @param newValue El nuevo valor del foco.
      */
-    private void handleTxtZipFocusChange(ObservableValue observable, 
+    private void handleTxtZipFocusChange(ObservableValue observable,
             Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             try {
@@ -541,7 +532,7 @@ public class SignUpController {
             }
         }
     }
-    
+
     /**
      * Manejador del evento de cambio de foco en el campo Email. Valida formato
      * de correos (-@-.-) y longitud máxima de 50 caracteres al perder el foco.
@@ -550,7 +541,7 @@ public class SignUpController {
      * @param oldValue El valor anterior del foco.
      * @param newValue El nuevo valor del foco.
      */
-    private void handleTxtEmailFocusChange(ObservableValue observable, 
+    private void handleTxtEmailFocusChange(ObservableValue observable,
             Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             try {
@@ -588,15 +579,14 @@ public class SignUpController {
     }
 
     /**
-     * Manejador del evento de cambio de texto en el campo Password. 
-     * Valida que no esté vacío y que tenga al menos 8 caracteres al cambiar 
-     * el texto.
+     * Manejador del evento de cambio de texto en el campo Password. Valida que
+     * no esté vacío y que tenga al menos 8 caracteres al cambiar el texto.
      *
      * @param observable El valor observable que cambia.
      * @param oldValue El valor anterior del texto.
      * @param newValue El nuevo valor del texto.
      */
-    private void handleTxtPasswordTextChange(ObservableValue observable, 
+    private void handleTxtPasswordTextChange(ObservableValue observable,
             String oldValue, String newValue) {
         try {
             // Si está vacío, lanzar excepción.
@@ -604,7 +594,7 @@ public class SignUpController {
                 throw new Exception("Password must not be empty");
             }
             // Si tiene símbolos inválidos, lanzar excepción.
-            if (!newValue.matches("[a-zA-Z0-9.*!@#$%&\\-_]+")) {
+            if (!newValue.matches("[a-zA-Z0-9.*!@#$%&\\-_]")) {
                 throw new Exception("Password contains invalid characters");
             }
             // Si tiene menos de 8 caracteres, lanzar excepción.
@@ -637,7 +627,7 @@ public class SignUpController {
      * @param oldValue El valor anterior del texto.
      * @param newValue El nuevo valor del texto.
      */
-    private void handleTxtRepeatPasswordTextChange(ObservableValue observable, 
+    private void handleTxtRepeatPasswordTextChange(ObservableValue observable,
             String oldValue, String newValue) {
         try {
             // Si está vacío, lanzar excepción.
@@ -665,45 +655,34 @@ public class SignUpController {
             checkBtnCreateAccount();
         }
     }
-    
+
     /**
      * Manejador del evento de acción en el hyperlink Sign In.
-     * 
+     *
      * @param event El evento de acción generado por el link.
      */
     private void handleLinkSignInAction(ActionEvent Event) {
         try {
             LOGGER.info("Clicked hyperlink");
             // Cargar FXML de Sign In y obtener la ventana.
-            URL res = getClass().getResource("/crudbankclientsideapplication/ui/SignIn.fxml");
-            LOGGER.info("SignIn.fxml resource: " + res);
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/crudbankclientsideapplication/ui/SignIn.fxml"));
-            Parent root = (Parent) loader.load();
-            Stage stage = (Stage) linkSignIn.getScene().getWindow();
+            Parent root = loader.load();
             SignInController controller = loader.getController();
-
-            // Cambiar la escena y conectar con Sign In.
-            controller.initStage(stage, root);
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            controller.initStage(this.stage, root);
             LOGGER.info("Correct connection with Sign In");
-            
+
         } catch (Exception e) {
             // Si no logra conectar con la ventana u otro error, mostrar un 
             // alert modal que indique que no se puede conectar con la ventana 
             // pedida. Debe aceptar el mensaje con un OK.
             LOGGER.warning("Error connection with Sign In");
             e.printStackTrace();
-            ButtonType acept = new ButtonType("OK");
-            new Alert(Alert.AlertType.ERROR, "Could not open Sign In window.", 
-                    acept)
+            new Alert(Alert.AlertType.ERROR, "Could not open Sign In window.")
                     .showAndWait();
         }
     }
-    
+
     /**
      * Manejador del evento de acción en el botón Exit.
      *
@@ -713,14 +692,12 @@ public class SignUpController {
         try {
             LOGGER.info("Clicked exit button");
             // Mostrar alert modal de confirmación para salir de la aplicación.
-            ButtonType yes = new ButtonType("Yes");
-            ButtonType no = new ButtonType("No");
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                    "Do you really want to exit?", yes, no);
+                    "Do you really want to exit?");
             alert.showAndWait().ifPresent(resp -> {
                 // Si confirma, cerrar la aplicación.
                 // Si cancela, mantener la ventana abierta.
-                if (resp == yes) {
+                if (resp == ButtonType.OK) {
                     LOGGER.info("Leaving Sign Up");
                     Stage stage = (Stage) btnExit.getScene().getWindow();
                     stage.close();
@@ -731,9 +708,7 @@ public class SignUpController {
             // indique que no se puede salir. Debe aceptar el mensaje con un OK.
             LOGGER.warning("Error leaving Sign Up");
             e.printStackTrace();
-            ButtonType acept = new ButtonType("OK");
-            new Alert(Alert.AlertType.ERROR, "Could not exit Sign Up window.", 
-                    acept)
+            new Alert(Alert.AlertType.ERROR, "Could not exit Sign Up window.")
                     .showAndWait();
         }
     }
@@ -770,11 +745,10 @@ public class SignUpController {
             // se ha generado correctamente el usuario. Debe aceptar el mensaje
             // con un OK.
             LOGGER.info("Correct user creation");
-            ButtonType acept = new ButtonType("OK");
             new Alert(Alert.AlertType.INFORMATION, "Customer created and logged"
-                    + " in successfully!", acept)
+                    + " in successfully!")
                     .showAndWait();
-            
+
             // Conectar con Sign In para iniciar sesión.
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/crudbankclientsideapplication/ui/SignIn.fxml"));
@@ -792,45 +766,43 @@ public class SignUpController {
             // con un OK. Se devuelve al Sign Up.
             LOGGER.warning("Error user creation: Email exists");
             e.printStackTrace();
-            ButtonType acept = new ButtonType("OK");
             new Alert(Alert.AlertType.ERROR,
-                    "The email exists. Please try another.", acept).showAndWait();
+                    "The email exists. Please try another.").showAndWait();
         } catch (InternalServerErrorException e) {
             // Excepción generada por el servidor por falta de conexión con esta. 
             // Mostrar un alert modal que indique el error. Debe aceptar el 
             // mensaje con un OK. Se devuelve al Sign Up.
             LOGGER.warning("Error user creation: Server error");
             e.printStackTrace();
-            ButtonType acept = new ButtonType("OK");
             new Alert(Alert.AlertType.ERROR,
-                    "Server error. Please try again later.", acept).showAndWait();
+                    "Server error. Please try again later.").showAndWait();
         } catch (Exception e) {
             // Excepción generada por cualquier otro error. Mostrar un alert 
             // modal que indique el error. Debe aceptar el mensaje con un OK. Se
             // devuelve al Sign Up.
             LOGGER.warning("Error user creation: Unknown error");
             e.printStackTrace();
-            ButtonType acept = new ButtonType("OK");
             new Alert(Alert.AlertType.ERROR,
-                    "Unexpected error: " + e.getMessage(), acept).showAndWait();
+                    "Unexpected error: " + e.getMessage()).showAndWait();
         } finally {
             // Cerrar cliente correctamente.
             client.close();
         }
     }
-    
+
     /**
-    * Gestiona los labels de error de la ventana Sign Up.
-    * Si el parámetro errText es null, se limpian todos los labels de error.  
-    * Si errText contiene texto, se usará para mostrar un mensaje de error.
-    * 
-    * @param message Mensaje de error a mostrar (null para limpiar).
+     * Gestiona los labels de error de la ventana Sign Up. Si el parámetro
+     * errText es null, se limpian todos los labels de error. Si errText
+     * contiene texto, se usará para mostrar un mensaje de error.
+     *
+     * @param message Mensaje de error a mostrar (null para limpiar).
      * @param textField Campo de texto asociado.
-    */
-    private void handleErrLabelChange(String message, javafx.scene.control.
-            TextInputControl textField) {
+     */
+    private void handleErrLabelChange(String message, javafx.scene.control.TextInputControl textField) {
         // Si los errores o los campos están vacíos, salir del método.
-        if (errLabels == null || txtFields == null) return;
+        if (errLabels == null || txtFields == null) {
+            return;
+        }
 
         // Busco el error correspondiente con la posición del campo.
         int i = txtFields.indexOf(textField);
@@ -848,10 +820,10 @@ public class SignUpController {
             }
         }
     }
-    
+
     /**
-    * Método que habilita btnCreateAccount si todos los campos son válidos.
-    */
+     * Método que habilita btnCreateAccount si todos los campos son válidos.
+     */
     private void checkBtnCreateAccount() {
         LOGGER.info("Confirming validations");
         boolean allValid = true;
@@ -863,6 +835,15 @@ public class SignUpController {
             allValid = false;
         }
         if (!txtMiddleInitial.getText().matches("[a-zA-Z]{1}")) {
+            allValid = false;
+        }
+        if (!txtEmail.getText().matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            allValid = false;
+        }
+        if (!txtPassword.getText().matches("[a-zA-Z0-9.*!@#$%&\\-_]{8,}")) {
+            allValid = false;
+        }
+        if (!txtRepeatPassword.getText().equals(txtPassword.getText())) {
             allValid = false;
         }
         if (!txtPhone.getText().matches("\\d{7,11}")) {
@@ -878,15 +859,6 @@ public class SignUpController {
             allValid = false;
         }
         if (!txtZip.getText().matches("\\d{5}")) {
-            allValid = false;
-        }
-        if (!txtEmail.getText().matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
-            allValid = false;
-        }
-        if (!txtPassword.getText().matches("[a-zA-Z0-9.*!@#$%&\\-_]{8,}")) {
-            allValid = false;
-        }
-        if (!txtRepeatPassword.getText().equals(txtPassword.getText())) {
             allValid = false;
         }
 
