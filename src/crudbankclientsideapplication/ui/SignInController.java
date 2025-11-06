@@ -48,8 +48,13 @@ public class SignInController {
     @FXML
     private Hyperlink linkSignUp;
     private static final Logger LOGGER = Logger.getLogger("crudbankclientside.ui");
+    private Stage stage;
 
     public void initStage(Stage stage, Parent root) {
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+         
+        this.stage = stage;
         LOGGER.info("Initializing window");
         //Establecer el título de la ventana
         stage.setTitle("Sign in");
@@ -93,11 +98,11 @@ public class SignInController {
             //Abrir la ventana de registro de nuevo usuario.
             FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUp.fxml"));
             Parent root = loader.load();
-            Scene scene = ((Node) event.getSource()).getScene();
-            scene.setRoot(root);
+            
+            SignUpController controller = loader.getController();
+            controller.init(this.stage, root);
             // Obtener el controlador correcto
-            //SignUpController controller = loader.getController();
-            //controller.init(stage, root);
+
         } catch (Exception e) {
             LOGGER.warning(e.getMessage());
         }
@@ -145,10 +150,11 @@ public class SignInController {
             //Verificar que el correo y la contraseña existe en la base de datos.
             Customer customer = client.findCustomerByEmailPassword_XML(Customer.class, email, password);
             //Si todo es correcto se abrirá la página “Main” y se cerrará la actual.
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+             FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
             Parent root = loader.load();
-            Scene scene = ((Node) event.getSource()).getScene();
-            scene.setRoot(root);
+            //Cargamos controlador
+            MainController controller = loader.getController();
+            controller.initStage(this.stage, root);
         } catch (NotAuthorizedException e) {
             LOGGER.warning(e.getMessage());
             //Si no coincide, se lanzará una excepción con el label de error y 
