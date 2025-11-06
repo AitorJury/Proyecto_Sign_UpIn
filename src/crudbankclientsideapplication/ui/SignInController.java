@@ -7,6 +7,7 @@ package crudbankclientsideapplication.ui;
 
 import crudbankclientsideapplication.logic.CustomerRESTClient;
 import crudbankclientsideapplication.model.Customer;
+import crudbankclientsideapplication.ui.SignUpController;
 
 import java.util.logging.Logger;
 import javafx.beans.property.StringProperty;
@@ -86,7 +87,6 @@ public class SignInController {
 
     }
 
-    //
     private void handleLinkOnAction(ActionEvent event) {
         try {
             //Cerrar la ventana actual.
@@ -95,6 +95,9 @@ public class SignInController {
             Parent root = loader.load();
             Scene scene = ((Node) event.getSource()).getScene();
             scene.setRoot(root);
+            // Obtener el controlador correcto
+            //SignUpController controller = loader.getController();
+            //controller.init(stage, root);
         } catch (Exception e) {
             LOGGER.warning(e.getMessage());
         }
@@ -221,7 +224,7 @@ public class SignInController {
      */
     private void handeltxtEmailFocusChange(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (oldValue && !newValue && !txtEmail.getText().isEmpty()) {
-            lblError.setText(""); 
+            lblError.setText("");
         }
     }
 
