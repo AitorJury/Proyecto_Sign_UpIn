@@ -1,6 +1,8 @@
 package crudbankclientsideapplication.ui;
 
 // Imports.
+import crudbankclientsideapplication.ui.SignInController;
+import crudbankclientsideapplication.ui.MainController;
 import crudbankclientsideapplication.model.Customer;
 import crudbankclientsideapplication.logic.CustomerRESTClient;
 import java.util.Arrays;
@@ -88,6 +90,9 @@ public class SignUpController {
     @FXML
     private Hyperlink linkSignIn;
     private Stage stage;
+    private ButtonType ok = new ButtonType("OK");
+    private ButtonType yes = new ButtonType("Yes");
+    private ButtonType no = new ButtonType("No");
 
     // Logger para consola.
     private static final Logger LOGGER
@@ -678,7 +683,6 @@ public class SignUpController {
             // pedida. Debe aceptar el mensaje con un OK.
             LOGGER.warning("Error connection with Sign In");
             e.printStackTrace();
-            ButtonType ok = new ButtonType("OK");
             new Alert(Alert.AlertType.ERROR, "Could not open Sign In window.", ok)
                     .showAndWait();
         }
@@ -693,14 +697,12 @@ public class SignUpController {
         try {
             LOGGER.info("Clicked exit button");
             // Mostrar alert modal de confirmación para salir de la aplicación.
-            ButtonType yes = new ButtonType("YES");
-            ButtonType no = new ButtonType("NO");
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                     "Do you really want to exit?", yes, no);
             alert.showAndWait().ifPresent(resp -> {
                 // Si confirma, cerrar la aplicación.
                 // Si cancela, mantener la ventana abierta.
-                if (resp == ButtonType.OK) {
+                if (resp == yes) {
                     LOGGER.info("Leaving Sign Up");
                     Stage stage = (Stage) btnExit.getScene().getWindow();
                     stage.close();
@@ -711,7 +713,6 @@ public class SignUpController {
             // indique que no se puede salir. Debe aceptar el mensaje con un OK.
             LOGGER.warning("Error leaving Sign Up");
             e.printStackTrace();
-            ButtonType ok = new ButtonType("OK");
             new Alert(Alert.AlertType.ERROR, "Could not exit Sign Up window.", ok)
                     .showAndWait();
         }
@@ -749,7 +750,6 @@ public class SignUpController {
             // se ha generado correctamente el usuario. Debe aceptar el mensaje
             // con un OK.
             LOGGER.info("Correct user creation");
-            ButtonType ok = new ButtonType("OK");
             new Alert(Alert.AlertType.INFORMATION, "Customer created and logged"
                     + " in successfully!", ok)
                     .showAndWait();
@@ -771,7 +771,6 @@ public class SignUpController {
             // con un OK. Se devuelve al Sign Up.
             LOGGER.warning("Error user creation: Email exists");
             e.printStackTrace();
-            ButtonType ok = new ButtonType("OK");
             new Alert(Alert.AlertType.ERROR,
                     "The email exists. Please try another.", ok).showAndWait();
         } catch (InternalServerErrorException e) {
@@ -780,7 +779,6 @@ public class SignUpController {
             // mensaje con un OK. Se devuelve al Sign Up.
             LOGGER.warning("Error user creation: Server error");
             e.printStackTrace();
-            ButtonType ok = new ButtonType("OK");
             new Alert(Alert.AlertType.ERROR,
                     "Server error. Please try again later.", ok).showAndWait();
         } catch (Exception e) {
@@ -789,7 +787,6 @@ public class SignUpController {
             // devuelve al Sign Up.
             LOGGER.warning("Error user creation: Unknown error");
             e.printStackTrace();
-            ButtonType ok = new ButtonType("OK");
             new Alert(Alert.AlertType.ERROR,
                     "Unexpected error: " + e.getMessage(), ok).showAndWait();
         } finally {
