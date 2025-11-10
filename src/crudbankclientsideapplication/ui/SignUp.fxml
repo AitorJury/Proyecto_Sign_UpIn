@@ -51,7 +51,7 @@
                 <Tooltip text="Enter your mobile phone number" />
             </tooltip>
         </Label>
-        <Label fx:id="errPhone" layoutX="735.0" layoutY="328.0" styleClass="error-label" />
+        <Label fx:id="errPhone" layoutX="740.0" layoutY="328.0" styleClass="error-label" />
 
         <Label layoutX="207.0" layoutY="377.0" text="City / State:" />
         <TextField fx:id="txtCity" layoutX="346.0" layoutY="370.0" prefHeight="30.0" prefWidth="170.0" promptText="City" styleClass="text-field" />
@@ -61,8 +61,8 @@
                 <Tooltip text="Indicate the city and province where you reside" />
             </tooltip>
         </Label>
-        <Label fx:id="errCity" layoutX="735.0" layoutY="370.0" styleClass="error-label" />
-        <Label fx:id="errState" layoutX="735.0" layoutY="370.0" styleClass="error-label" />
+        <Label fx:id="errCity" layoutX="740.0" layoutY="370.0" styleClass="error-label" />
+        <Label fx:id="errState" layoutX="740.0" layoutY="386.0" styleClass="error-label" />
 
         <Label layoutX="207.0" layoutY="417.0" text="Street / ZIP:" />
         <TextField fx:id="txtStreet" layoutX="346.0" layoutY="410.0" prefHeight="30.0" prefWidth="225.0" promptText="Street" styleClass="text-field" />
@@ -72,8 +72,8 @@
                 <Tooltip text="Enter your full address and postal code" />
             </tooltip>
         </Label>
-        <Label fx:id="errStreet" layoutX="735.0" layoutY="410.0" styleClass="error-label" />
-        <Label fx:id="errZip" layoutX="735.0" layoutY="410.0" styleClass="error-label" />
+        <Label fx:id="errStreet" layoutX="740.0" layoutY="402.0" styleClass="error-label" />
+        <Label fx:id="errZip" layoutX="740.0" layoutY="418.0" styleClass="error-label" />
 
         <Label layoutX="207.0" layoutY="458.0" text="Email:" />
         <TextField fx:id="txtEmail" layoutX="346.0" layoutY="451.0" prefHeight="30.0" prefWidth="352.0" promptText="user@example.com" styleClass="text-field" />
