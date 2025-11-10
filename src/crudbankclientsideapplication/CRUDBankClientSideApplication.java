@@ -6,6 +6,8 @@
 package crudbankclientsideapplication;
 
 import crudbankclientsideapplication.ui.SignInController;
+import crudbankclientsideapplication.ui.SignUpController;
+import crudbankclientsideapplication.ui.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
