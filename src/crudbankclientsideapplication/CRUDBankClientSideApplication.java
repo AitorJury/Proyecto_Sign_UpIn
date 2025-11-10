@@ -29,10 +29,6 @@ public class CRUDBankClientSideApplication extends Application {
          SignInController controller = loader.getController();
          controller.initStage(stage, root);
         
-                
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
     }
 
     /**

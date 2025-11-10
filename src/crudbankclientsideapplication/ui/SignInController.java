@@ -149,12 +149,14 @@ public class SignInController {
             //Verificar que la contraseña coincida con la del usuario registrado. 
             //Verificar que el correo y la contraseña existe en la base de datos.
             Customer customer = client.findCustomerByEmailPassword_XML(Customer.class, email, password);
+
             //Si todo es correcto se abrirá la página “Main” y se cerrará la actual.
              FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
             Parent root = loader.load();
             //Cargamos controlador
             MainController controller = loader.getController();
             controller.initStage(this.stage, root);
+
         } catch (NotAuthorizedException e) {
             LOGGER.warning(e.getMessage());
             //Si no coincide, se lanzará una excepción con el label de error y 
