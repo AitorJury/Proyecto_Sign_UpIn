@@ -37,8 +37,11 @@ public class MainController {
     private ButtonType no = new ButtonType("No");
 
     public void initStage(Stage stage, Parent root) {
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        this.stage = stage;
         LOGGER.info("Initializing window");
-        stage.setTitle("Main window");
+        stage.setTitle("Main");
         stage.setResizable(false);
 
         btnLogout.setOnAction(this::handleBtnLogoutOnAction);
@@ -59,8 +62,9 @@ public class MainController {
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("SignIn.fxml"));
                         Parent root = loader.load();
-                        Scene scene = ((Node) event.getSource()).getScene();
-                        scene.setRoot(root);
+                        
+                        SignInController controller = loader.getController();
+                        controller.initStage(this.stage, root);
 
                     } catch (IOException e) {
                         e.printStackTrace(); // o muestra un alert de error

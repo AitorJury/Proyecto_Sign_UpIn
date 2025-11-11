@@ -57,7 +57,7 @@ public class SignInController {
     public void initStage(Stage stage, Parent root) {
         Scene scene = new Scene(root);
         stage.setScene(scene);
-         
+
         this.stage = stage;
         LOGGER.info("Initializing window");
         //Establecer el título de la ventana
@@ -102,7 +102,7 @@ public class SignInController {
             //Abrir la ventana de registro de nuevo usuario.
             FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUp.fxml"));
             Parent root = loader.load();
-            
+
             SignUpController controller = loader.getController();
             controller.init(this.stage, root);
             // Obtener el controlador correcto
@@ -153,7 +153,7 @@ public class SignInController {
             Customer customer = client.findCustomerByEmailPassword_XML(Customer.class, email, password);
 
             //Si todo es correcto se abrirá la página “Main” y se cerrará la actual.
-             FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
             Parent root = loader.load();
             //Cargamos controlador
             MainController controller = loader.getController();
