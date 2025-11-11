@@ -8,6 +8,7 @@ package crudbankclientsideapplication.ui;
 import crudbankclientsideapplication.logic.CustomerRESTClient;
 import crudbankclientsideapplication.model.Customer;
 import crudbankclientsideapplication.ui.SignUpController;
+import crudbankclientsideapplication.ui.MainController;
 
 import java.util.logging.Logger;
 import javafx.beans.property.StringProperty;
@@ -49,11 +50,14 @@ public class SignInController {
     private Hyperlink linkSignUp;
     private static final Logger LOGGER = Logger.getLogger("crudbankclientside.ui");
     private Stage stage;
+    private ButtonType ok = new ButtonType("OK");
+    private ButtonType yes = new ButtonType("Yes");
+    private ButtonType no = new ButtonType("No");
 
     public void initStage(Stage stage, Parent root) {
         Scene scene = new Scene(root);
         stage.setScene(scene);
-         
+
         this.stage = stage;
         LOGGER.info("Initializing window");
         //Establecer el título de la ventana
@@ -98,7 +102,7 @@ public class SignInController {
             //Abrir la ventana de registro de nuevo usuario.
             FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUp.fxml"));
             Parent root = loader.load();
-            
+
             SignUpController controller = loader.getController();
             controller.init(this.stage, root);
             // Obtener el controlador correcto
@@ -111,8 +115,6 @@ public class SignInController {
     private void handleBtnExitOnAction(ActionEvent event) {
         //boton exit
         try {
-            ButtonType yes = new ButtonType("Yes");
-            ButtonType no = new ButtonType("No");
             // Mostrar alert modal de confirmación para salir de la aplicación
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Do you want to exit?", yes, no);
             alert.setTitle("Exit the application");
@@ -151,7 +153,7 @@ public class SignInController {
             Customer customer = client.findCustomerByEmailPassword_XML(Customer.class, email, password);
 
             //Si todo es correcto se abrirá la página “Main” y se cerrará la actual.
-             FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
             Parent root = loader.load();
             //Cargamos controlador
             MainController controller = loader.getController();
