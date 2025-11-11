@@ -1,15 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package crudbankclientsideapplication.ui;
 
 import crudbankclientsideapplication.CRUDBankClientSideApplication;
 import javafx.stage.Stage;
-import javax.ws.rs.NotAuthorizedException;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
@@ -21,18 +14,20 @@ import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 /**
  *
- * @author cynthia
+ * @author Cynthia.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 
 public class SignInControllerTest extends ApplicationTest {
-    
+            
     @Override
     public void start(Stage stage) throws Exception{
         new CRUDBankClientSideApplication().start(stage);
-        
     }
 
+    /**
+     * Test que verifica el estado inicial.
+     */
     @Test
     public void test1_InitialState() {
         verifyThat("#btnSignIn", isDisabled());
@@ -40,12 +35,17 @@ public class SignInControllerTest extends ApplicationTest {
         verifyThat("#txtPassword",hasText(""));
     } 
     
+    /**
+     * Test que verifica el foco inicial en Email.
+     */
     @Test
     public void test2_txtEmailIsFocused() {
         verifyThat("#txtEmail", isFocused());
-        
     } 
     
+    /**
+     * Test que verifica que el botón SignIn se habilita.
+     */
     @Test
     public void tes3_ButtonEnable(){
         clickOn("#txtEmail");
@@ -60,6 +60,10 @@ public class SignInControllerTest extends ApplicationTest {
         write("hello");
         verifyThat("#btnSignIn", isEnabled());
     }
+    
+    /**
+     * Test que verifica que el email no exista en la base.
+     */
     @Test
     public void test4_NotAuthorizedExceptionTest(){
         clickOn("#txtEmail");
@@ -68,15 +72,22 @@ public class SignInControllerTest extends ApplicationTest {
         write("qwerty");
         clickOn("#btnSignIn");
         
-        verifyThat( "Okay", isVisible());
-         clickOn("Okay");
+        verifyThat( "OK", isVisible());
+         clickOn("OK");
     }
     
+    /**
+     * Test que verifica que el link envíe a la ventana Sign Up.
+     */
     @Test
-    public void test5_LinkSignIn(){
+    public void test5_LinkSignUp(){
         clickOn("#linkSignUp");
         verifyThat("#btnCreateAccount", isVisible());
     }
+    
+    /**
+     * Test que verifique que el botón Exit funciona.
+     */
     @Test 
     public void test6_ExitButton(){
         clickOn("#btnExit");
@@ -84,6 +95,9 @@ public class SignInControllerTest extends ApplicationTest {
         clickOn("Yes");
     }
     
+    /**
+     * Test que verifica que el botón SignIn accede a la ventana Main.
+     */
     @Test
     public void test7_SignIn(){
         clickOn("#txtEmail");
@@ -94,7 +108,10 @@ public class SignInControllerTest extends ApplicationTest {
         verifyThat("#btnLogout", isVisible());
     } 
  
-    // El siguiente test solo funciona si el servidor está desconectado
+    /**
+     * Test que verifica que no hay conexión con el servidor.
+     * El siguiente test solo funciona si el servidor está desconectado.
+     */
     /*
     @Test
     public void test8_NoServer() {
@@ -105,7 +122,7 @@ public class SignInControllerTest extends ApplicationTest {
         clickOn("#btnSignIn");
     
         verifyThat("It cannot connect to the server.", isVisible());
-        clickOn("Okay");
+        clickOn("OK");
     }
     */
 }

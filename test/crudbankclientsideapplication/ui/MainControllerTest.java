@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package crudbankclientsideapplication.ui;
 
 import crudbankclientsideapplication.CRUDBankClientSideApplication;
@@ -12,11 +7,10 @@ import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
-import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 
 /**
  *
- * @author aitor & cynthia
+ * @author Aitor & Cynthia.
  */
 public class MainControllerTest extends ApplicationTest {
 
@@ -25,7 +19,9 @@ public class MainControllerTest extends ApplicationTest {
         new CRUDBankClientSideApplication().start(stage);
     }
     // Los siguientes test funcionan si el correo está insertado en la base
-
+    /**
+     * Test que verifica el funcionamiento del botón Exit.
+     */
     @Test
     public void test1_BtnExit() {
         clickOn("#txtEmail");
@@ -42,6 +38,9 @@ public class MainControllerTest extends ApplicationTest {
         clickOn("Yes");
     }
 
+    /**
+     * Test que verifica el funcionamiento del botón Log Out.
+     */
     @Test
     public void test2_BtnLogOut() {
         clickOn("#txtEmail");

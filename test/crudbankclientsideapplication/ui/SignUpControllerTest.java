@@ -1,26 +1,19 @@
 package crudbankclientsideapplication.ui;
 
 import crudbankclientsideapplication.CRUDBankClientSideApplication;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.FixMethodOrder;
-import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isFocused;
-import static org.testfx.matcher.base.NodeMatchers.isNull;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 
 /**
  *
- * @author aitor
+ * @author Aitor.
  */
 public class SignUpControllerTest extends ApplicationTest {
 
@@ -29,6 +22,9 @@ public class SignUpControllerTest extends ApplicationTest {
         new CRUDBankClientSideApplication().start(stage);
     }
 
+    /**
+     * Test que verifica los cmapos vacíos.
+     */
     @Test
     public void test1_TextFieldsEmpty() {
         clickOn("#linkSignUp");
@@ -45,18 +41,27 @@ public class SignUpControllerTest extends ApplicationTest {
         verifyThat("#txtRepeatPassword", hasText(""));
     }
 
+    /**
+     * Test que verifica el foco inicial en First Name.
+     */
     @Test
     public void test2_FirstNameIsFocused() {
         clickOn("#linkSignUp");
         verifyThat("#txtFirstName", isFocused());
     }
 
+    /**
+     * Test que verifica que botón Exit está habilitado.
+     */
     @Test
     public void test3_ButtonExitEanbled() {
         clickOn("#linkSignUp");
         verifyThat("#btnExit", isEnabled());
     }
 
+    /**
+     * Test que verifica un registro correcto.
+     */
     @Test
     public void test4_CorrectSignUp() {
         clickOn("#linkSignUp");
@@ -89,7 +94,10 @@ public class SignUpControllerTest extends ApplicationTest {
         verifyThat("#btnSignIn", isVisible());
     }
 
-    // Este Test solo funciona si el correo ya existe en la base
+    /**
+     * Test que verifica Email existente.
+     * Este Test solo funciona si el correo ya existe en la base.
+     */
     @Test
     public void test5_ExistingEmail_ForbiddenException() {
         clickOn("#linkSignUp");
@@ -123,6 +131,9 @@ public class SignUpControllerTest extends ApplicationTest {
 
     }
 
+    /**
+     * Test que verifica que el botón Exit cierre la ventana.
+     */
     @Test
     public void test6_BtnExit_CloseWindow() {
         clickOn("#linkSignUp");
@@ -134,13 +145,19 @@ public class SignUpControllerTest extends ApplicationTest {
         clickOn("Yes");
     }
 
+    /**
+     * Test que verifica que el link abre la ventana Sign In.
+     */
     @Test
     public void test7_LinkSignIn_OpenWindowSignIn() {
         clickOn("#linkSignUp");
         clickOn("#linkSignIn");
         verifyThat("#btnSignIn", isVisible());
     }
-    
+
+    /**
+     * Test que verifica que el botón CreateAccount no se habilite con un campo vacío.
+     */
     @Test
     public void test8_BtnCreateAccount_DisabledIfIsEmpty() {
         clickOn("#linkSignUp");
@@ -183,7 +200,10 @@ public class SignUpControllerTest extends ApplicationTest {
         verifyThat("#btnCreateAccount", isEnabled());
     }
     
-    // El siguiente test solo funciona si el servidor está desconectado
+    /**
+     * Test que verifica que el servidor esté apagado.
+     * El siguiente test solo funciona si el servidor está desconectado.
+     */
     /*
     @Test
     public void test9_ServerOff() {
