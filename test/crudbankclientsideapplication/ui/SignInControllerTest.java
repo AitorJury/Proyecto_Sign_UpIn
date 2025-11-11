@@ -32,7 +32,7 @@ public class SignInControllerTest extends ApplicationTest {
         new CRUDBankClientSideApplication().start(stage);
         
     }
-    
+
     @Test
     public void test1_InitialState() {
         verifyThat("#btnSignIn", isDisabled());
@@ -93,5 +93,19 @@ public class SignInControllerTest extends ApplicationTest {
         clickOn("#btnSignIn");
         verifyThat("#btnLogout", isVisible());
     } 
+ 
+    // El siguiente test solo funciona si el servidor está desconectado
+    /*
+    @Test
+    public void test8_NoServer() {
+        clickOn("#txtEmail");
+        write("awallace@gmail.com");
+        clickOn("#txtPassword");
+        write("qwerty*9876");
+        clickOn("#btnSignIn");
     
+        verifyThat("It cannot connect to the server.", isVisible());
+        clickOn("Okay");
+    }
+    */
 }

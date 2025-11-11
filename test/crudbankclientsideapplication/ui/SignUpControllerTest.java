@@ -89,6 +89,7 @@ public class SignUpControllerTest extends ApplicationTest {
         verifyThat("#btnSignIn", isVisible());
     }
 
+    // Este Test solo funciona si el correo ya existe en la base
     @Test
     public void test5_ExistingEmail_ForbiddenException() {
         clickOn("#linkSignUp");
@@ -98,7 +99,7 @@ public class SignUpControllerTest extends ApplicationTest {
         clickOn("#txtMiddleInitial");
         write("A");
         clickOn("#txtEmail");
-        write("existinguser@mail.com");
+        write("aitor.jr04@mail.com");
         clickOn("#txtPassword");
         write("abcd*1234");
         clickOn("#txtRepeatPassword");
@@ -113,6 +114,7 @@ public class SignUpControllerTest extends ApplicationTest {
         write("Calle Ejemplo");
         clickOn("#txtZip");
         write("12345");
+        clickOn("#txtEmail");
 
         verifyThat("#btnCreateAccount", isEnabled());
         clickOn("#btnCreateAccount");
@@ -126,10 +128,10 @@ public class SignUpControllerTest extends ApplicationTest {
         clickOn("#linkSignUp");
         clickOn("#btnExit");
         verifyThat("Do you really want to exit?", isVisible());
-        clickOn("NO");
+        clickOn("No");
         verifyThat("#btnExit", isVisible());
         clickOn("#btnExit");
-        clickOn("YES");
+        clickOn("Yes");
     }
 
     @Test
@@ -142,11 +144,43 @@ public class SignUpControllerTest extends ApplicationTest {
     @Test
     public void test8_BtnCreateAccount_DisabledIfIsEmpty() {
         clickOn("#linkSignUp");
-        write("Aitor");
-        clickOn("#txtLastName");
-        write("");
-        clickOn("#txtMiddleInitial");
+        write("Existente");
         verifyThat("#btnCreateAccount", isDisabled());
+        clickOn("#txtLastName");
+        write("Test");
+        verifyThat("#btnCreateAccount", isDisabled());
+        clickOn("#txtMiddleInitial");
+        write("A");
+        verifyThat("#btnCreateAccount", isDisabled());
+        clickOn("#txtEmail");
+        write("aitor.jr04@mail.com");
+        verifyThat("#btnCreateAccount", isDisabled());
+        clickOn("#txtPassword");
+        write("abcd*1234");
+        verifyThat("#btnCreateAccount", isDisabled());
+        clickOn("#txtRepeatPassword");
+        write("abcd*1234");
+        verifyThat("#btnCreateAccount", isDisabled());
+        clickOn("#txtPhone");
+        write("123456789");
+        verifyThat("#btnCreateAccount", isDisabled());
+        clickOn("#txtCity");
+        write("Sevilla");
+        verifyThat("#btnCreateAccount", isDisabled());
+        clickOn("#txtState");
+        write("Andalucia");
+        verifyThat("#btnCreateAccount", isDisabled());
+        clickOn("#txtStreet");
+        write("Calle Ejemplo");
+        verifyThat("#btnCreateAccount", isDisabled());
+        clickOn("#txtZip");
+        write("");
+        clickOn("#txtStreet");
+        verifyThat("#btnCreateAccount", isDisabled());
+        clickOn("#txtZip");
+        write("12345");
+        clickOn("#txtEmail");
+        verifyThat("#btnCreateAccount", isEnabled());
     }
     
     // El siguiente test solo funciona si el servidor está desconectado
