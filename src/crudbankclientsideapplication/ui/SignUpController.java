@@ -803,7 +803,8 @@ public class SignUpController {
      * @param message Mensaje de error a mostrar (null para limpiar).
      * @param textField Campo de texto asociado.
      */
-    private void handleErrLabelChange(String message, javafx.scene.control.TextInputControl textField) {
+    private void handleErrLabelChange(String message, javafx.scene.control
+            .TextInputControl textField) {
         // Si los errores o los campos están vacíos, salir del método.
         if (errLabels == null || txtFields == null) {
             return;

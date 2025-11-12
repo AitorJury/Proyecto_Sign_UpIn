@@ -1,22 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package crudbankclientsideapplication;
 
 import crudbankclientsideapplication.ui.SignInController;
-import crudbankclientsideapplication.ui.SignUpController;
-import crudbankclientsideapplication.ui.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
  *
- * @authors aitor & cynthia
+ * @authors Aitor & Cynthia.
  * 
  */
 public class CRUDBankClientSideApplication extends Application {
@@ -32,7 +24,7 @@ public class CRUDBankClientSideApplication extends Application {
     }
 
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments.
      */
     public static void main(String[] args) {
         launch(args);
