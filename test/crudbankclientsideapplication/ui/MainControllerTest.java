@@ -25,9 +25,9 @@ public class MainControllerTest extends ApplicationTest {
     @Test
     public void test1_BtnExit() {
         clickOn("#txtEmail");
-        write("aitor.jr04@gmail.com");
+        write("awallace@gmail.com");
         clickOn("#txtPassword");
-        write("abcd*1234");
+        write("qwerty*9876");
         clickOn("#btnSignIn");
 
         verifyThat("#btnExit", isEnabled());
@@ -44,9 +44,9 @@ public class MainControllerTest extends ApplicationTest {
     @Test
     public void test2_BtnLogOut() {
         clickOn("#txtEmail");
-        write("aitor.jr04@gmail.com");
+        write("awallace@gmail.com");
         clickOn("#txtPassword");
-        write("abcd*1234");
+        write("qwerty*9876");
         clickOn("#btnSignIn");
 
         verifyThat("#btnLogout", isEnabled());

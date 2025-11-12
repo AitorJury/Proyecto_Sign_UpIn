@@ -81,7 +81,7 @@ public class SignUpControllerTest extends ApplicationTest {
         clickOn("#txtZip");
         write("28260");
         clickOn("#txtEmail");
-        write("ejemplo" + System.currentTimeMillis() + "@mail.com");
+        write("ejemplo" + System.currentTimeMillis() + "@gmail.com");
         clickOn("#txtPassword");
         write("abcd*1234");
         clickOn("#txtRepeatPassword");
@@ -107,7 +107,7 @@ public class SignUpControllerTest extends ApplicationTest {
         clickOn("#txtMiddleInitial");
         write("A");
         clickOn("#txtEmail");
-        write("aitor.jr04@mail.com");
+        write("aitor.jr04@gmail.com");
         clickOn("#txtPassword");
         write("abcd*1234");
         clickOn("#txtRepeatPassword");
@@ -170,7 +170,7 @@ public class SignUpControllerTest extends ApplicationTest {
         write("A");
         verifyThat("#btnCreateAccount", isDisabled());
         clickOn("#txtEmail");
-        write("aitor.jr04@mail.com");
+        write("aitor.jr04@gmail.com");
         verifyThat("#btnCreateAccount", isDisabled());
         clickOn("#txtPassword");
         write("abcd*1234");
@@ -224,7 +224,7 @@ public class SignUpControllerTest extends ApplicationTest {
         clickOn("#txtZip");
         write("28260");
         clickOn("#txtEmail");
-        write("ejemplo" + System.currentTimeMillis() + "@mail.com");
+        write("ejemplo" + System.currentTimeMillis() + "@gmail.com");
         clickOn("#txtPassword");
         write("abcd*1234");
         clickOn("#txtRepeatPassword");

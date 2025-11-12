@@ -69,7 +69,6 @@ public class SignInController {
         txtEmail.focusedProperty().addListener(this::handeltxtEmailFocusChange);
         txtEmail.textProperty().addListener(this::handeltxtEmailTextChange);
         txtPassword.textProperty().addListener(this::handeltxtPasswordTextChange);
-        txtPassword.focusedProperty().addListener(this::handletxtPasswordFocusChange);
 
         stage.show();
         btnSignIn.setDisable(true);
@@ -116,6 +115,7 @@ public class SignInController {
             SignUpController controller = loader.getController();
             controller.init(this.stage, root);
             // Obtener el controlador correcto.
+            LOGGER.info("Changing to Sign Up Window");
 
         } catch (Exception e) {
             LOGGER.warning(e.getMessage());
@@ -181,6 +181,7 @@ public class SignInController {
             // Cargamos controlador.
             MainController controller = loader.getController();
             controller.initStage(this.stage, root);
+            LOGGER.info("Changing to Main Window");
 
         } catch (NotAuthorizedException e) {
             LOGGER.warning(e.getMessage());
@@ -270,20 +271,6 @@ public class SignInController {
             Boolean oldValue, Boolean newValue) {
         if (oldValue && !newValue && !txtEmail.getText().isEmpty()) {
             lblError.setText("");
-        }
-    }
-
-    /**
-     * Manejador del cambio de foco del campo Password.
-     * 
-     * @param observable El valor observable que cambia.
-     * @param oldValue El valor anterior del foco.
-     * @param newValue El nuevo valor del foco.
-     */
-    private void handletxtPasswordFocusChange(ObservableValue observable, 
-            Boolean oldValue, Boolean newValue) {
-        if (oldValue && !newValue) {
-
         }
     }
 

@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @authors Aitor & Cynthia
+ * @authors Aitor & Cynthia.
  * 
  */
 public class CRUDBankClientSideApplication extends Application {
@@ -24,7 +24,7 @@ public class CRUDBankClientSideApplication extends Application {
     }
 
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments.
      */
     public static void main(String[] args) {
         launch(args);
