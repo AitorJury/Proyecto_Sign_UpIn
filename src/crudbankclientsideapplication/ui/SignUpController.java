@@ -755,15 +755,12 @@ public class SignUpController {
                     .showAndWait();
 
             // Conectar con Sign In para iniciar sesión.
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                    "/crudbankclientsideapplication/ui/SignIn.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("SignIn.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) linkSignIn.getScene().getWindow();
 
-            // Cambiar la escena y conectar con Sign In.
-            stage.setScene(new Scene(root));
-            stage.setTitle("Sign In");
-            stage.show();
+            SignInController controller = loader.getController();
+            controller.initStage(this.stage, root);
+            
             LOGGER.info("Correct connection with Sign In");
         } catch (ForbiddenException e) {
             // Excepción generada por el servidor por email ya usado. Mostrar
